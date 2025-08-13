@@ -101,7 +101,24 @@
 // synopsys translate_off
 `include "timescale.v"
 // synopsys translate_on
-`include "tap_defines.v"
+
+// Define IDCODE Value
+`define IDCODE_VALUE  32'h149511c3
+// 0001             version
+// 0100100101010001 part number (IQ)
+// 00011100001      manufacturer id (flextronics)
+// 1                required by standard
+
+// Length of the Instruction register
+`define	IR_LENGTH	4
+
+// Supported Instructions
+`define EXTEST          4'b0000
+`define SAMPLE_PRELOAD  4'b0001
+`define IDCODE          4'b0010
+`define DEBUG           4'b1000
+`define MBIST           4'b1001
+`define BYPASS          4'b1111
 
 // Top module
 module jtag_tap(
@@ -118,6 +135,7 @@ module jtag_tap(
                 pause_dr_o, 
                 update_dr_o,
                 capture_dr_o,
+                test_logic_reset_o,
                 
                 // Select signals for boundary scan or mbist
                 extest_select_o, 
@@ -196,6 +214,7 @@ assign shift_dr_o = shift_dr;
 assign pause_dr_o = pause_dr;
 assign update_dr_o = update_dr;
 assign capture_dr_o = capture_dr;
+assign test_logic_reset_o = test_logic_reset;
 
 assign extest_select_o = extest_select;
 assign sample_preload_select_o = sample_preload_select;
