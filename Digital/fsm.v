@@ -16,6 +16,7 @@ module fsm(
     output reg  [RANGE_SEL_WIDTH-1:0]  range_sel_o,
     output reg                         afe_reset_o,
     output reg                         ref_sign_o,
+    output reg                         mode_sel_o,
 
     // Result/status
     output reg                         busy_o,
@@ -25,6 +26,7 @@ module fsm(
 );
     localparam [2:0] S_RESET    = 3'd0;
     localparam [2:0] S_IDLE     = 3'd1;
+    localparam [2:0] S_INTE     = 3'd2;
 
     reg [2:0] current_state, next_state;
 
