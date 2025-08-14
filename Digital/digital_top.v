@@ -16,4 +16,6 @@ module digital_top (
     output wire [2:0] mode_sel_o
 );
 
+
+
 endmodule
