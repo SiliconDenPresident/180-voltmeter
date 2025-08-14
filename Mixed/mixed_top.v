@@ -36,10 +36,10 @@ module mixed_top(
     output wire tdo_o, 
 
     // Boundary Scan Signals
-    input wire [32:0] bsr_i,
+    input wire [14:0] bsr_i,
     output wire extest_select,
-    output wire [32:0] bsr_o,
-    output wire [32:0] bsr_oe
+    output wire [14:0] bsr_o,
+    output wire [14:0] bsr_oe
 );
     // Analog wires
     wire [3:0] afe_sel;     // per-phase AFE select (AZ / VIN / +VREF / −VREF) driven by the measure FSM

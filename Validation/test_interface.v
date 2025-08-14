@@ -16,7 +16,11 @@ module test_if (
 
     output wire debug_tdi_o,
     output wire bs_chain_tdi_o,
-    output wire mbist_tdi_o
+    output wire mbist_tdi_o,
+
+    input wire [14:0] bsr_i,
+    output wire [14:0] bsr_o,
+    output wire [14:0] bsr_oe
 );
 // MBIST Parameters, Wires, & Registers
 
