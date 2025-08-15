@@ -27,6 +27,7 @@ module mixed_top(
     output wire analog_test_o,
 
     // Digital signals
+    output wire [2:0] mode_sel_o,
 
     // JTAG signals 
     input wire tck_i,
@@ -74,6 +75,14 @@ module mixed_top(
     wire tdi_bs;
     wire tdi_bist;
 
+    wire [32:0] bsr_i;
+    wire [14:0] bsr_oe;
+    wire [14:0] bsr_o;
+
+    wire [15:0] dbg_i;
+    wire [7:0] dbg_o;
+
+
 analog_top analog_top_inst (
   .clk_i(clk_i),
   .rst_i(rst_i),
@@ -98,8 +107,7 @@ analog_top analog_top_inst (
   .ref_ok_o(ref_ok),
 
   // Control from JTAG
-  .cmp_trim_i(cmp_trim),
-  .testmux_sel_i(testmux_sel),
+  .dbg_i(dbg_o),
   .analog_test_o(analog_test_o)
 );
 
@@ -118,7 +126,8 @@ digital_top digital_top_inst(
     .range_sel_o  (range_sel),
     .afe_reset_o  (afe_reset),
     .ref_sign_o   (ref_sign),
-    .mode_sel_o   (mode_sel),
+
+    .dbg_o(dbg_i)
 );
 
 jtag_tap jtag_tap_inst(
@@ -171,8 +180,12 @@ jtag_test_if jtag_test_if_inst(
     .bs_chain_tdi_i(tdi_bs),
     .mbist_tdi_i(tdi_bist),
 
-    .cmp_trim_o(cmp_trim),
-    .testmux_sel_o(testmux_sel)
+    .bsr_i(bsr_i),
+    .bsr_o(bsr_o),
+    .bsr_oe(bsr_oe),
+
+    .dbg_i(dbg_i),
+    .dbg_o(dbg_o)
 );
 
 

@@ -13,7 +13,8 @@ module digital_top (
     output wire [4:0] range_sel_o,
     output wire afe_reset_o,
     output wire ref_sign_o,
-    output wire [2:0] mode_sel_o
+
+    output wire [15:0] dbg_o
 );
 
 

@@ -1,4 +1,4 @@
-module test_if (
+module jtag_test_if (
     input wire tck_i,
     input wire test_logic_reset_i,
 
@@ -20,7 +20,10 @@ module test_if (
 
     input wire [32:0] bsr_i,
     output wire [14:0] bsr_o,
-    output wire [14:0] bsr_oe
+    output wire [14:0] bsr_oe,
+
+    input wire [DBG_STATUS_LEN-1:0] dbg_i,
+    output wire [DBG_CONTROL_LEN-1:0] dbg_o
 );
 // MBIST Parameters, Wires, & Registers
 
@@ -41,57 +44,80 @@ localparam int SLICE_OE_HI   = IN_LEN + OUT_LEN + OE_LEN - 1;
 reg [BSR_LEN-1:0] bsr_shift;
 reg [OUT_LEN-1:0] bsr_preload_o, bsr_extest_o;
 reg [OE_LEN-1:0] bsr_preload_oe, bsr_extest_oe;
+reg extest_select_prev;
 
 // DEBUG Parameters, Wires, & Registers
+localparam int DBG_LEN = 25; // msb is for r/w 
+localparam int DBG_CONTROL_LEN = 8;
+localparam int DBG_STATUS_LEN = 16;
+
+reg [DBG_LEN-1:0] dbg_shift;
+reg [DBG_CONTROL_LEN-1:0] dbg_control;
 
 //------------ MBIST --------------
 // Built-in Self-Test (BIST), which is used to test SRAM/ROMs/Registers, is not implemented
 
-//------------ SAMPLE_PRELOAD --------------
-// Is used to update the Boundary Scan Register (BSR) without affecting the pad pins.
+assign mbist_tdi_o = 1'b0;
 
-always @(posedge tck_i or posedge test_logic_reset_i) begin
-  if (test_logic_reset_i) begin
+//------------ SAMPLE_PRELOAD --------------
+// It is used to update the Output portions of the BSR without affecting the pad pins.
+
+always@(posedge tck_i or posedge test_logic_reset_i) begin
+  if(test_logic_reset_i) begin
     bsr_preload_o <= 0;
     bsr_preload_oe <= 0;
+    bsr_shift <= 0;
   end else begin
-    if (capture_dr_i && sample_preload_select_i) begin
-      bsr_shift[SLICE_IN_HI:SLICE_IN_LO] <= bsr_i;
-      bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO] <= bsr_preload_o;
-      bsr_shift[SLICE_OE_HI:SLICE_OE_LO] <= bsr_preload_oe;
-      bsr_shift[BSR_LEN-1] <= 1'b0;
-    end
-    if (shift_dr_i && sample_preload_select_i) begin
-      bsr_shift <= {tdi_i, bsr_shift[BSR_LEN-1:1]};
-    end
-    if (update_dr_i && sample_preload_select_i) begin
-      if(bsr_shift[BSR_LEN-1]) begin
-        bsr_preload_o <= bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO];
-        bsr_preload_oe <= bsr_shift[SLICE_OE_HI:SLICE_OE_LO];
+    if(sample_preload_select_i) begin
+      if(capture_dr_i) begin
+        bsr_shift[SLICE_IN_HI:SLICE_IN_LO] <= bsr_i;
+        bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO] <= bsr_preload_o;
+        bsr_shift[SLICE_OE_HI:SLICE_OE_LO] <= bsr_preload_oe;
+        bsr_shift[BSR_LEN-1] <= 1'b0;
+      end
+      if(shift_dr_i) begin
+        bsr_shift <= {tdi_i, bsr_shift[BSR_LEN-1:1]};
+      end
+      if(update_dr_i) begin
+        if(bsr_shift[BSR_LEN-1]) begin
+          bsr_preload_o <= bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO];
+          bsr_preload_oe <= bsr_shift[SLICE_OE_HI:SLICE_OE_LO];
+        end
       end
     end
   end
 end
 
 //------------ EXTEST --------------
-always @(posedge tck_i or posedge test_logic_reset_i) begin
-  if (test_logic_reset_i) begin
+// It is used to update the output portions of the Boundary Scan Register (BSR) with the values 
+// from sample_preload first and then future extest values
+
+always@(posedge tck_i or posedge test_logic_reset_i) begin
+  if(test_logic_reset_i) begin
     bsr_extest_o <= 0;
     bsr_extest_oe <= 0;
+    extest_select_prev <= 0;
   end else begin
-    if (capture_dr_i && extest_select_i) begin
-      bsr_shift[SLICE_IN_HI:SLICE_IN_LO] <= bsr_i;
-      bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO] <= bsr_preload_o;
-      bsr_shift[SLICE_OE_HI:SLICE_OE_LO] <= bsr_preload_oe;
-      bsr_shift[BSR_LEN-1] <= 1'b0;
-    end
-    if (shift_dr_i && extest_select_i) begin
-      bsr_shift <= {tdi_i, bsr_shift[BSR_LEN-1:1]};
-    end
-    if (update_dr_i && extest_select_i) begin
-      if(bsr_shift[BSR_LEN-1]) begin
-        bsr_extest_o <= bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO];
-        bsr_extest_oe <= bsr_shift[SLICE_OE_HI:SLICE_OE_LO];
+    extest_select_prev <= extest_select_i;
+    if(extest_select_i) begin
+      if(!extest_select_prev)begin
+        bsr_extest_o <= bsr_preload_o;
+        bsr_extest_oe <= bsr_preload_oe;
+      end
+      if(capture_dr_i) begin
+        bsr_shift[SLICE_IN_HI:SLICE_IN_LO] <= bsr_i;
+        bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO] <= bsr_extest_o;
+        bsr_shift[SLICE_OE_HI:SLICE_OE_LO] <= bsr_extest_oe;
+        bsr_shift[BSR_LEN-1] <= 1'b0;
+      end
+      if(shift_dr_i) begin
+        bsr_shift <= {tdi_i, bsr_shift[BSR_LEN-1:1]};
+      end
+      if(update_dr_i) begin
+        if(bsr_shift[BSR_LEN-1]) begin
+          bsr_extest_o <= bsr_shift[SLICE_OUT_HI:SLICE_OUT_LO];
+          bsr_extest_oe <= bsr_shift[SLICE_OE_HI:SLICE_OE_LO];
+        end
       end
     end
   end
@@ -102,10 +128,31 @@ assign bsr_o = bsr_extest_o;
 assign bsr_oe = bsr_extest_oe;
 
 // ----------------- DEBUG -----------------
+// This is used to control and monitor the design through debug signals
 
+always @(posedge tck_i or posedge test_logic_reset_i) begin
+  if(test_logic_reset_i) begin
+    dbg_control <= 0;
+    dbg_shift <= 0;
+  end else begin
+    if(debug_select_i) begin
+      if(capture_dr_i) begin
+        dbg_shift[DBG_CONTROL_LEN-1:0] <= dbg_control;
+        dbg_shift[DBG_CONTROL_LEN+DBG_STATUS_LEN-1:DBG_CONTROL_LEN] <= dbg_i;
+        dbg_shift[DBG_LEN-1] <= 1'b0;
+      end
+      if(shift_dr_i) begin
+        dbg_shift <= {tdi_i, dbg_shift[DBG_LEN-1:1]};
+      end
+      if(update_dr_i) begin
+        if(dbg_shift[DBG_LEN-1]) begin
+          dbg_control <= dbg_shift[DBG_CONTROL_LEN-1:0];
+        end
+      end
+    end
+  end
+end
 
-//cmp 
-//wire [3:0] testmux_sel; 
-//wire [6:0] cmp_trim;    // comparator offset trim code (mid-code≈zero); set via JTAG/CSR, static during runs
-
+assign debug_tdi_o = debug_select_i ? dbg_shift[0] : 1'b0;
+assign dbg_o = dbg_control;
 endmodule
