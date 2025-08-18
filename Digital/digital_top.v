@@ -1,3 +1,23 @@
+/*
+--------------------------------------------------------------------------------
+ Title        : digital_top
+ Project      : 180-voltmeter
+ File         : digital_top.v
+ Description  : Top-level digital control module that orchestrates the voltmeter
+                system. Integrates analog signal sanitization, SPI slave interface,
+                and provides control signals to the analog front-end. Handles
+                communication with external SPI master and manages analog control
+                outputs for measurement operations.
+ 
+ Author       : Tristan Wood tdwood2@ncsu.edu
+ Created      : 2025-08-13
+ License      : See LICENSE in the project root
+
+ Revision History:
+   - 0.1 2025-08-13 Tristan Wood Initial implementation with analog sanitizer and SPI slave
+--------------------------------------------------------------------------------
+*/
+
 module digital_top (
     input wire clk_i,
     input wire rst_i,
@@ -23,6 +43,20 @@ module digital_top (
 
     output wire [15:0] dbg_o
 );
+
+    // Analog sanitizer instance
+    analog_sanitizer analog_sanitizer_inst (
+        .clk_i(clk_i),
+        .rst_i(rst_i),
+        .comp_i(comp_i),
+        .sat_hi_i(sat_hi_i),
+        .sat_lo_i(sat_lo_i),
+        .ref_ok_i(ref_ok_i),
+        .comp_o(comp_o),
+        .sat_hi_o(sat_hi_o),
+        .sat_lo_o(sat_lo_o),
+        .ref_ok_o(ref_ok_o)
+    );
 
     // Internal signals for SPI slave interface
     wire [31:0] spi_data_in;   // Data to send to master

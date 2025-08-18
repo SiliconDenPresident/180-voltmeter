@@ -1,3 +1,23 @@
+/*
+--------------------------------------------------------------------------------
+ Title        : state_machine
+ Project      : 180-voltmeter
+ File         : state_machine.v
+ Description  : Finite state machine that controls the voltmeter measurement
+                sequence. Manages the auto-zero, integrate, and deintegrate phases
+                of dual-slope analog-to-digital conversion. Coordinates timing
+                control through counter instances and generates appropriate AFE
+                control signals for each measurement phase.
+ 
+ Author       : Tristan Wood tdwood2@ncsu.edu
+ Created      : 2025-08-13
+ License      : See LICENSE in the project root
+
+ Revision History:
+   - 0.1 2025-08-13 Tristan Wood Initial implementation of voltmeter measurement FSM
+--------------------------------------------------------------------------------
+*/
+
 module state_machine (
     input wire clk_i,
     input wire rst_i,
