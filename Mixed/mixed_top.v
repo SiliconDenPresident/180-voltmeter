@@ -16,9 +16,6 @@
 */
 
 module mixed_top(
-    input wire clk_i,
-    input wire rst_i,
-
     // Analog signals
     input wire vin_p_i,
     input wire vin_n_i,
@@ -27,7 +24,16 @@ module mixed_top(
     output wire analog_test_o,
 
     // Digital signals
-    output wire [2:0] mode_sel_o,
+    input wire clk_i,
+    input wire rst_i,
+    input wire [1:0] mode_sel_i,
+
+    // SPI signals
+    input wire spi_sclk_i,
+    input wire spi_cs_i,
+    input wire spi_mosi_i,
+    output wire spi_miso_o,
+    output wire data_valid_o,
 
     // JTAG signals 
     input wire tck_i,
@@ -35,6 +41,7 @@ module mixed_top(
     input wire tms_i,
     input wire tdi_i,
     output wire tdo_o, 
+    output wire tdo_padoe_o,
 
     // Boundary Scan Signals
     input wire [14:0] bsr_i,
@@ -43,11 +50,10 @@ module mixed_top(
     output wire [14:0] bsr_oe
 );
     // Analog wires
-    wire [3:0] afe_sel;     // per-phase AFE select (AZ / VIN / +VREF / −VREF) driven by the measure FSM
-    wire [4:0] range_sel;   // autorange code: selects ladder/shunt/test-current per MODE, updated between conversions
+    wire [1:0] afe_sel;     // per-phase AFE select (AZ / VIN / +VREF / −VREF) driven by the measure FSM
+    wire [2:0] range_sel;   // autorange code: selects ladder/shunt/test-current per MODE, updated between conversions
     wire       afe_reset;   // integrator reset/discharge pulse for deterministic start/abort
     wire       ref_sign;    // deintegrate polarity (0:+VREF, 1:−VREF) if not encoded inside afe_sel
-    wire [2:0] mode_sel;    // measurement family: e.g., 0=V, 1=I, 2=R (latched at conversion boundary)
 
     // Digital wires
     wire comp_in;  // comparator sign: 1 => Vint ≥ 0 V (positive side), 0 => Vint < 0 V (negative); sync in digital
@@ -56,9 +62,6 @@ module mixed_top(
     wire ref_ok;   // reference settled/ready; gate start of conversion or switch to ±VREF
 
     // JTAG wires
-    wire tdo_internal;
-    wire tdo_padoe_o;
-
     wire shift_dr;
     wire pause_dr;
     wire update_dr;
@@ -82,23 +85,19 @@ module mixed_top(
     wire [15:0] dbg_i;
     wire [7:0] dbg_o;
 
-
 analog_top analog_top_inst (
-  .clk_i(clk_i),
-  .rst_i(rst_i),
-
   // Probes & reference from pads
   .vin_p_i(vin_p_i),
   .vin_n_i(vin_n_i),
   .vref_p_i(vref_p_i),
   .vref_n_i(vref_n_i),
 
-  // Control from digital (autozero/integrate/deintegrate, range, etc.)
+  // Control from digital
   .afe_sel_i(afe_sel),
   .range_sel_i(range_sel),
   .afe_reset_i(afe_reset),
   .ref_sign_i(ref_sign),
-  .mode_sel_i(mode_sel),
+  .mode_sel_i(mode_sel_i),
 
   // Status back to digital
   .comp_o(comp_in),
@@ -116,16 +115,23 @@ digital_top digital_top_inst(
     .rst_i(rst_i),
 
     // Analog status in
-    .comp_i       (comp_in),
-    .sat_hi_i     (sat_hi),
-    .sat_lo_i     (sat_lo),
-    .ref_ok_i     (ref_ok),
+    .comp_i(comp_in),
+    .sat_hi_i(sat_hi),
+    .sat_lo_i(sat_lo),
+    .ref_ok_i(ref_ok),
+
+    // SPI Signals
+    .spi_sclk_i(spi_sclk_i),
+    .spi_cs_i(spi_cs_i),
+    .spi_mosi_i(spi_mosi_i),
+    .spi_miso_o(spi_miso_o),
+    .data_valid_o(data_valid_o),
 
     // Analog control out
-    .afe_sel_o    (afe_sel),
-    .range_sel_o  (range_sel),
-    .afe_reset_o  (afe_reset),
-    .ref_sign_o   (ref_sign),
+    .afe_sel_o(afe_sel),
+    .range_sel_o(range_sel),
+    .afe_reset_o(afe_reset),
+    .ref_sign_o(ref_sign),
 
     .dbg_o(dbg_i)
 );
@@ -136,7 +142,7 @@ jtag_tap jtag_tap_inst(
     .trst_pad_i(trst_i),
     .tms_pad_i(tms_i),
     .tdi_pad_i(tdi_i),
-    .tdo_pad_o(tdo_internal),
+    .tdo_pad_o(tdo_o),
     .tdo_padoe_o(tdo_padoe_o),
 
     // Output from jtag_tap to test_interface, to allow monitoring of TAP states
@@ -187,9 +193,4 @@ jtag_test_if jtag_test_if_inst(
     .dbg_i(dbg_i),
     .dbg_o(dbg_o)
 );
-
-
-// JTAG TDO tristate
-assign tdo_o = tdo_padoe_o ? tdo_internal : 1'bz;
-
 endmodule

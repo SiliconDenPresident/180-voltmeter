@@ -1,3 +1,22 @@
+/*
+--------------------------------------------------------------------------------
+ Title        : JTAG Test Interface
+ Project      : 180-voltmeter
+ File         : test_interface.v
+ Description  : Test interface module implementing IEEE 1149.1 JTAG boundary scan,
+                debug control, and MBIST interfaces. Handles test data register 
+                operations for various test modes including EXTEST, SAMPLE/PRELOAD,
+                and debug access.
+
+ Author       : Tristan Wood tdwood2@ncsu.edu
+ Created      : 2025-08-13
+ License      : See LICENSE in the project root
+
+ Revision History:
+   - 0.1 2025-08-13 Tristan Wood Initial implementation of test interface logic
+--------------------------------------------------------------------------------
+*/
+
 module jtag_test_if (
     input wire tck_i,
     input wire test_logic_reset_i,
