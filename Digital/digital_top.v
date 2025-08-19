@@ -19,31 +19,37 @@
 */
 
 module digital_top (
-    input wire clk_i,
-    input wire rst_i,
-
-    // Analog status in
+    // Analog Signals
     input wire comp_i,
     input wire sat_hi_i,
     input wire sat_lo_i,
     input wire ref_ok_i,
 
-    // SPI Signals
+    // Digital Signals
+    input wire clk_i,
+    input wire rst_i,
+
+    // -- State Machine Signals
+    input wire [1:0] mode_sel_i,
+    output wire [1:0] afe_sel_o,
+    output wire [2:0] range_sel_o,
+    output wire afe_reset_o,
+    output wire ref_sign_o,
+
+    // -- SPI Signals
     input wire spi_sclk_i,
     input wire spi_cs_i,
     input wire spi_mosi_i,
     output wire spi_miso_o,
     output wire data_valid_o,
 
-    // Analog control out
-    output wire [1:0] afe_sel_o,
-    output wire [2:0] range_sel_o,
-    output wire afe_reset_o,
-    output wire ref_sign_o,
-
+    // -- Validation Signals
     output wire [15:0] dbg_o
 );
+    // Analog Parameters, Wires, & Registers
 
+
+    // State machine instance
     // Analog sanitizer instance
     analog_sanitizer analog_sanitizer_inst (
         .clk_i(clk_i),

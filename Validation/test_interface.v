@@ -37,9 +37,9 @@ module jtag_test_if (
     output wire bs_chain_tdi_o,
     output wire mbist_tdi_o,
 
-    input wire [32:0] bsr_i,
-    output wire [14:0] bsr_o,
-    output wire [14:0] bsr_oe,
+    input wire [IN_LEN-1:0] bsr_i,
+    output wire [OUT_LEN-1:0] bsr_o,
+    output wire [OE_LEN-1:0] bsr_oe,
 
     input wire [DBG_STATUS_LEN-1:0] dbg_i,
     output wire [DBG_CONTROL_LEN-1:0] dbg_o
@@ -47,11 +47,13 @@ module jtag_test_if (
 // MBIST Parameters, Wires, & Registers
 
 // EXTEST & SAMPLE_PRELOAD Parameters, Wires, & Registers
+// There are 15 GPIO PADs and 18 DIN PADs
+// But JTAG signals are excluded so we have 14 GPIO and 14 DIN
 // Chain order (LSB-first): [OE | OUT | IN]
-localparam int BSR_LEN = 64;  // MSB is a r/w bit for sample_preload/extest
-localparam int OE_LEN  = 15;  // GPIO only
-localparam int OUT_LEN = 15;  // GPIO only
-localparam int IN_LEN  = 33;  // 15 GPIO + 18 DIN
+localparam int BSR_LEN = 57;  // MSB is a r/w bit for sample_preload/extest
+localparam int OE_LEN  = 14;  // GPIO only
+localparam int OUT_LEN = 14;  // GPIO only
+localparam int IN_LEN  = 28;  // 14 GPIO + 14 DIN
 
 localparam int SLICE_IN_LO   = 0;
 localparam int SLICE_IN_HI   = IN_LEN-1;
@@ -66,15 +68,15 @@ reg [OE_LEN-1:0] bsr_preload_oe, bsr_extest_oe;
 reg extest_select_prev;
 
 // DEBUG Parameters, Wires, & Registers
-localparam int DBG_LEN = 25; // msb is for r/w 
-localparam int DBG_CONTROL_LEN = 8;
-localparam int DBG_STATUS_LEN = 16;
+localparam int DBG_LEN = 64; 
+localparam int DBG_CONTROL_LEN = 32;
+localparam int DBG_STATUS_LEN = 32;
 
 reg [DBG_LEN-1:0] dbg_shift;
 reg [DBG_CONTROL_LEN-1:0] dbg_control;
 
 //------------ MBIST --------------
-// Built-in Self-Test (BIST), which is used to test SRAM/ROMs/Registers, is not implemented
+// Memory Built-in Self-Test (MBIST), which is used to test SRAM/ROMs/Registers, is not implemented
 
 assign mbist_tdi_o = 1'b0;
 
@@ -164,10 +166,12 @@ always @(posedge tck_i or posedge test_logic_reset_i) begin
         dbg_shift <= {tdi_i, dbg_shift[DBG_LEN-1:1]};
       end
       if(update_dr_i) begin
-        if(dbg_shift[DBG_LEN-1]) begin
+        if(dbg_shift[DBG_CONTROL_LEN-1]) begin
           dbg_control <= dbg_shift[DBG_CONTROL_LEN-1:0];
         end
       end
+    end else if(dbg_i[DBG_STATUS_LEN-1]) begin
+      dbg_control <= dbg_i[DBG_STATUS_LEN-1:0];
     end
   end
 end

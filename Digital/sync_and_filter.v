@@ -24,46 +24,46 @@ module sync_and_filter #(
 )(
     input  wire clk_i,
     input  wire rst_i,
-    input  wire async_in,
-    output reg  clean_out
+    input  wire async_i,
+    output wire clean_out_o
 );
-
-    // ---------------------------------------------------------
-    // 1. Two-FF synchronizer
-    // ---------------------------------------------------------
     reg sync_ff1, sync_ff2;
+    reg [CTR_WIDTH-1:0] ctr;
+    reg clean_out;
+    
+    // 1. Two-FF synchronizer
     always @(posedge clk_i or posedge rst_i) begin
         if (rst_i) begin
             sync_ff1 <= 1'b0;
             sync_ff2 <= 1'b0;
         end else begin
-            sync_ff1 <= async_in;
+            sync_ff1 <= async_i;
             sync_ff2 <= sync_ff1;
         end
     end
 
-    // ---------------------------------------------------------
     // 2. Saturating Up/Down Counter
-    // ---------------------------------------------------------
-    reg [CTR_WIDTH-1:0] ctr;
-
     always @(posedge clk_i or posedge rst_i) begin
         if (rst_i) begin
             ctr       <= {CTR_WIDTH{1'b0}};
             clean_out <= 1'b0;
         end else begin
             // Increment or decrement
-            if (sync_ff2 && ctr != {CTR_WIDTH{1'b1}})
+            if (sync_ff2 && ctr != {CTR_WIDTH{1'b1}}) begin
                 ctr <= ctr + 1'b1;
-            else if (!sync_ff2 && ctr != {CTR_WIDTH{1'b0}})
+            end else if (!sync_ff2 && ctr != {CTR_WIDTH{1'b0}}) begin
                 ctr <= ctr - 1'b1;
+            end
 
             // Decision with hysteresis
-            if (ctr >= HIGH_THRESH)
+            if (ctr >= HIGH_THRESH) begin
                 clean_out <= 1'b1;
-            else if (ctr <= LOW_THRESH)
+            end else if (ctr <= LOW_THRESH) begin
                 clean_out <= 1'b0;
+            end
         end
     end
+
+    assign clean_out_o = clean_out;
 
 endmodule
