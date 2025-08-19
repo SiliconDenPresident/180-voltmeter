@@ -125,14 +125,7 @@ module state_machine (
         endcase
     end
 
-    counter counter_inst (
-        .clk_i(clk_i),
-        .rst_i(rst_i),
-        .en_i(counter_en),
-        .limit_i(counter_limit),
-        .count_o(counter_count),
-        .done_o(counter_done)
-    );
+
 
     assign counter_rst = rst_i || counter_clear;
     assign afe_reset_o = afe_reset;

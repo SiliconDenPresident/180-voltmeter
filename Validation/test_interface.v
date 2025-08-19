@@ -159,8 +159,8 @@ always @(posedge tck_i or posedge test_logic_reset_i) begin
     if(debug_select_i) begin
       if(capture_dr_i) begin
         dbg_shift[DBG_CONTROL_LEN-1:0] <= dbg_control;
-        dbg_shift[DBG_CONTROL_LEN+DBG_STATUS_LEN-1:DBG_CONTROL_LEN] <= dbg_i;
-        dbg_shift[DBG_LEN-1] <= 1'b0;
+        dbg_shift[DBG_LEN-1:DBG_CONTROL_LEN] <= dbg_i;
+        dbg_shift[DBG_LEN-1] <= 1'b0;  
       end
       if(shift_dr_i) begin
         dbg_shift <= {tdi_i, dbg_shift[DBG_LEN-1:1]};
