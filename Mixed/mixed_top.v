@@ -56,7 +56,7 @@ module mixed_top(
     wire       ref_sign;    // deintegrate polarity (0:+VREF, 1:−VREF) if not encoded inside afe_sel
 
     // Digital wires
-    wire comp_in;  // comparator sign: 1 => Vint ≥ 0 V (positive side), 0 => Vint < 0 V (negative); sync in digital
+    wire comp;  // comparator sign: 1 => Vint ≥ 0 V (positive side), 0 => Vint < 0 V (negative); sync in digital
     wire sat_hi;   // integrator saturated at +rail (early overrange/abort hint)
     wire sat_lo;   // integrator saturated at −rail (early overrange/abort hint)
     wire ref_ok;   // reference settled/ready; gate start of conversion or switch to ±VREF
@@ -100,7 +100,7 @@ analog_top analog_top_inst (
   .mode_sel_i(mode_sel_i),
 
   // Status back to digital
-  .comp_o(comp_in),
+  .comp_o(comp),
   .sat_hi_o(sat_hi),
   .sat_lo_o(sat_lo),
   .ref_ok_o(ref_ok),
@@ -115,7 +115,7 @@ digital_top digital_top_inst(
     .rst_i(rst_i),
 
     // Analog status in
-    .comp_i(comp_in),
+    .comp_i(comp),
     .sat_hi_i(sat_hi),
     .sat_lo_i(sat_lo),
     .ref_ok_i(ref_ok),
