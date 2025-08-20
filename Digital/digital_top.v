@@ -37,20 +37,49 @@ module digital_top (
     output wire ref_sign_o,
 
     // -- SPI Signals
+    input wire interrupt_i,
     input wire spi_sclk_i,
     input wire spi_cs_i,
     input wire spi_mosi_i,
     output wire spi_miso_o,
-    output wire data_valid_o,
 
     // -- Validation Signals
-    output wire [15:0] dbg_o
+    input wire [7:0] dbg_i,     // Debug input signals
+    output wire [15:0] dbg_o    // Debug output signals
 );
+    //---------------------------------------------------------
+    // Declarations
+    //---------------------------------------------------------
+
     // Analog Parameters, Wires, & Registers
 
+    // Digital Parameters, Wires, & Registers
+    wire [15:0] counter_limit;  // Counter limit value from state machine
+    wire [15:0] counter_count;  // Current counter value
+    wire counter_en;           // Counter enable signal
+    wire counter_clear;        // Counter clear signal
+    wire counter_busy;         // Counter busy status
+    wire counter_done;         // Counter done status
+    wire done;                // State machine done signal
+    wire range_error_o;       // Range error signal
+    wire comp_o, sat_hi_o, sat_lo_o, ref_ok_o;  // Sanitized analog signals
 
-    // State machine instance
-    // Analog sanitizer instance
+    // SPI interface signals
+    wire [31:0] spi_data_in;  // SPI data to send to master
+    wire spi_wr_ack;          // SPI write acknowledge
+    wire spi_do_valid;        // SPI data output valid
+    wire [31:0] spi_data_out; // SPI received data
+    wire spi_do_transfer;     // SPI data transfer flag
+    wire spi_wren_dbg;        // SPI write enable debug
+    wire spi_rx_bit_next;     // SPI next bit to receive
+    wire [3:0] spi_state_dbg; // SPI state machine debug
+    wire [31:0] spi_sh_reg_dbg; // SPI shift register debug
+
+    //---------------------------------------------------------
+    // Instantiations
+    //---------------------------------------------------------
+
+    // Analog 
     analog_sanitizer analog_sanitizer_inst (
         .clk_i(clk_i),
         .rst_i(rst_i),
@@ -64,27 +93,45 @@ module digital_top (
         .ref_ok_o(ref_ok_o)
     );
 
-    // Internal signals for SPI slave interface
-    wire [31:0] spi_data_in;   // Data to send to master
-    wire [31:0] spi_data_out;  // Data received from master
-    wire spi_di_req;           // Data input request
-    wire spi_wren;             // Write enable
-    wire spi_wr_ack;           // Write acknowledge
-    wire spi_do_valid;         // Data output valid
-    
-    // Debug signals from SPI slave
-    wire spi_do_transfer;
-    wire spi_wren_dbg;
-    wire spi_rx_bit_next;
-    wire [3:0] spi_state_dbg;
-    wire [31:0] spi_sh_reg_dbg;
+    // State Machine
+    state_machine state_machine_inst (
+        .clk_i(clk_i),
+        .rst_i(rst_i),
+        .comp_i(comp_o),
+        .sat_hi_i(sat_hi_o),
+        .sat_lo_i(sat_lo_o),
+        .ref_ok_i(ref_ok_o),
+        .afe_sel_o(afe_sel_o),
+        .range_sel_o(range_sel_o),
+        .afe_reset_o(afe_reset_o),
+        .ref_sign_o(ref_sign_o),
+        .range_error_o(range_error_o),
+        .done_o(done),
+        .counter_done_i(counter_done),
+        .counter_busy_i(counter_busy),
+        .counter_clear_o(counter_clear),
+        .counter_en_o(counter_en),
+        .counter_limit_o(counter_limit)
+    );
+
+    // Counter
+    counter counter_inst (
+        .clk_i(clk_i),
+        .rst_i(rst_i),
+        .en_i(counter_en),
+        .clear_i(counter_clear),
+        .limit_i(counter_limit),
+        .busy_o(counter_busy),
+        .done_o(counter_done),
+        .count_o(counter_count)
+    );
 
     // SPI slave instance
     spi_slave #(
         .N(32),               // 32-bit data width
         .CPOL(1'b0),          // Clock polarity 0
         .CPHA(1'b0),          // Clock phase 0
-        .PREFETCH(3)          // 3 cycle prefetch
+        .PREFETCH(3)          // 3 cycle prefetch (must be <= N-5)
     ) spi_slave_inst (
         .clk_i(clk_i),        // System clock
         .spi_ssel_i(spi_cs_i),    // Chip select (active low)
@@ -93,20 +140,24 @@ module digital_top (
         .spi_miso_o(spi_miso_o),  // Master in, slave out
         
         // Parallel data interface
-        .di_req_o(spi_di_req),    // Data input request
-        .di_i(spi_data_in),       // Data to send to master
-        .wren_i(spi_wren),        // Write enable
+        .di_req_o(interrupt_i),    // Data input request
+        .di_i(spi_data_in[31:0]), // Data to send to master
+        .wren_i(done),            // Write enable
         .wr_ack_o(spi_wr_ack),    // Write acknowledge
         .do_valid_o(spi_do_valid), // Data output valid
-        .do_o(spi_data_out),      // Received data
+        .do_o(spi_data_out[31:0]), // Received data
         
         // Debug ports
         .do_transfer_o(spi_do_transfer),
         .wren_o(spi_wren_dbg),
         .rx_bit_next_o(spi_rx_bit_next),
-        .state_dbg_o(spi_state_dbg),
-        .sh_reg_dbg_o(spi_sh_reg_dbg)
+        .state_dbg_o(spi_state_dbg[3:0]),
+        .sh_reg_dbg_o(spi_sh_reg_dbg[31:0])
     );
+
+    //---------------------------------------------------------
+    // Assignments
+    //---------------------------------------------------------
 
     // Connect data_valid_o to SPI slave's do_valid_o
     assign data_valid_o = spi_do_valid;

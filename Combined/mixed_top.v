@@ -29,11 +29,11 @@ module mixed_top(
     input wire [1:0] mode_sel_i,
 
     // -- SPI signals
+    input wire interrupt_i,
     input wire spi_sclk_i,
     input wire spi_cs_i,
     input wire spi_mosi_i,
     output wire spi_miso_o,
-    output wire data_valid_o,
 
     // -- JTAG signals 
     input wire tck_i,
@@ -47,25 +47,26 @@ module mixed_top(
     input wire [27:0] bsr_i,
     output wire [13:0] bsr_o,
     output wire [13:0] bsr_oe,
-    output wire extest_select,
+    output wire extest_select
 );
+
     //---------------------------------------------------------
     // Declarations
     //---------------------------------------------------------
 
-    // Analog Parameters, Wires, & Registers
+    // Analog 
     wire [1:0] afe_sel;     // per-phase AFE select (AZ / VIN / +VREF / −VREF) driven by the measure FSM
     wire [2:0] range_sel;   // autorange code: selects ladder/shunt/test-current per MODE, updated between conversions
     wire       afe_reset;   // integrator reset/discharge pulse for deterministic start/abort
     wire       ref_sign;    // deintegrate polarity (0:+VREF, 1:−VREF) if not encoded inside afe_sel
 
-    // Digital Parameters, Wires, & Registers
+    // Digital 
     wire comp;  // comparator sign: 1 => Vint ≥ 0 V (positive side), 0 => Vint < 0 V (negative); sync in digital
     wire sat_hi;   // integrator saturated at +rail (early overrange/abort hint)
     wire sat_lo;   // integrator saturated at −rail (early overrange/abort hint)
     wire ref_ok;   // reference settled/ready; gate start of conversion or switch to ±VREF
 
-    //  -- JTAG Parameters, Wires, & Registers
+    // - JTAG 
     wire shift_dr;
     wire pause_dr;
     wire update_dr;
@@ -79,13 +80,13 @@ module mixed_top(
     wire chip_tdi;
     wire tdi_mbist;
 
-    // -- -- Boundary Scan Parameters, Wires, & Registers
+    // -- Boundary Scan
     wire tdi_bs;
 
-    // -- -- Debug Parameters, Wires, & Registers   
+    // -- Debug  
     wire tdi_debug;
-    wire [15:0] dbg_i;
-    wire [7:0] dbg_o;
+    wire [31:0] dbg_i;  // Debug input signals (32-bit)
+    wire [31:0] dbg_o;  // Debug output signals (32-bit)
 
     //---------------------------------------------------------
     // Instantiations
@@ -125,6 +126,7 @@ module mixed_top(
         .range_sel_o(range_sel),
         .afe_reset_o(afe_reset),
         .ref_sign_o(ref_sign),
+        .mode_sel_i(mode_sel_i),
 
         // Analog status in
         .comp_i(comp),
@@ -133,11 +135,11 @@ module mixed_top(
         .ref_ok_i(ref_ok),
 
         // SPI Signals
+        .interrupt_i(interrupt_i),
         .spi_sclk_i(spi_sclk_i),
         .spi_cs_i(spi_cs_i),
         .spi_mosi_i(spi_mosi_i),
         .spi_miso_o(spi_miso_o),
-        .data_valid_o(data_valid_o),
 
         // Validation Signals
         .dbg_o(dbg_i),
@@ -197,8 +199,8 @@ module mixed_top(
 
         // Input from test_interface to jtag_tap, to allow monitoring of TAP states
         .debug_tdi_o(tdi_debug),
-        .bs_chain_tdi_i(tdi_bs),
-        .mbist_tdi_i(tdi_bist),
+        .bs_chain_tdi_o(tdi_bs),
+        .mbist_tdi_o(tdi_mbist),
 
         // Boundary Scan Signals
         .bsr_i(bsr_i),

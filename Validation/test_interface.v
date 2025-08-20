@@ -17,7 +17,28 @@
 --------------------------------------------------------------------------------
 */
 
-module jtag_test_if (
+module jtag_test_if #(
+    // EXTEST & SAMPLE_PRELOAD Parameters
+    // There are 15 GPIO PADs and 18 DIN PADs
+    // But JTAG signals are excluded so we have 14 GPIO and 14 DIN
+    // Chain order (LSB-first): [OE | OUT | IN]
+    parameter BSR_LEN = 57,  // MSB is a r/w bit for sample_preload/extest
+    parameter OE_LEN  = 14,  // GPIO only
+    parameter OUT_LEN = 14,  // GPIO only
+    parameter IN_LEN  = 28,  // 14 GPIO + 14 DIN
+
+    parameter SLICE_IN_LO   = 0,
+    parameter SLICE_IN_HI   = IN_LEN-1,
+    parameter SLICE_OUT_LO  = IN_LEN,
+    parameter SLICE_OUT_HI  = IN_LEN + OUT_LEN - 1,
+    parameter SLICE_OE_LO   = IN_LEN + OUT_LEN,
+    parameter SLICE_OE_HI   = IN_LEN + OUT_LEN + OE_LEN - 1,
+
+    // DEBUG Parameters
+    parameter DBG_LEN = 64,
+    parameter DBG_CONTROL_LEN = 32,
+    parameter DBG_STATUS_LEN = 32
+) (
     input wire tck_i,
     input wire test_logic_reset_i,
 
@@ -44,43 +65,30 @@ module jtag_test_if (
     input wire [DBG_STATUS_LEN-1:0] dbg_i,
     output wire [DBG_CONTROL_LEN-1:0] dbg_o
 );
-// MBIST Parameters, Wires, & Registers
 
-// EXTEST & SAMPLE_PRELOAD Parameters, Wires, & Registers
-// There are 15 GPIO PADs and 18 DIN PADs
-// But JTAG signals are excluded so we have 14 GPIO and 14 DIN
-// Chain order (LSB-first): [OE | OUT | IN]
-localparam int BSR_LEN = 57;  // MSB is a r/w bit for sample_preload/extest
-localparam int OE_LEN  = 14;  // GPIO only
-localparam int OUT_LEN = 14;  // GPIO only
-localparam int IN_LEN  = 28;  // 14 GPIO + 14 DIN
+//---------------------------------------------------------
+// Declarations
+//---------------------------------------------------------
 
-localparam int SLICE_IN_LO   = 0;
-localparam int SLICE_IN_HI   = IN_LEN-1;
-localparam int SLICE_OUT_LO  = IN_LEN;
-localparam int SLICE_OUT_HI  = IN_LEN + OUT_LEN - 1;
-localparam int SLICE_OE_LO   = IN_LEN + OUT_LEN;
-localparam int SLICE_OE_HI   = IN_LEN + OUT_LEN + OE_LEN - 1;
-
+// EXTEST & SAMPLE_PRELOAD 
 reg [BSR_LEN-1:0] bsr_shift;
 reg [OUT_LEN-1:0] bsr_preload_o, bsr_extest_o;
 reg [OE_LEN-1:0] bsr_preload_oe, bsr_extest_oe;
 reg extest_select_prev;
 
-// DEBUG Parameters, Wires, & Registers
-localparam int DBG_LEN = 64; 
-localparam int DBG_CONTROL_LEN = 32;
-localparam int DBG_STATUS_LEN = 32;
-
+// DEBUG 
 reg [DBG_LEN-1:0] dbg_shift;
 reg [DBG_CONTROL_LEN-1:0] dbg_control;
 
-//------------ MBIST --------------
+// MBIST 
 // Memory Built-in Self-Test (MBIST), which is used to test SRAM/ROMs/Registers, is not implemented
-
 assign mbist_tdi_o = 1'b0;
 
-//------------ SAMPLE_PRELOAD --------------
+//---------------------------------------------------------
+// Implementations
+//---------------------------------------------------------
+
+// SAMPLE_PRELOAD
 // It is used to update the Output portions of the BSR without affecting the pad pins.
 
 always@(posedge tck_i or posedge test_logic_reset_i) begin
@@ -109,7 +117,7 @@ always@(posedge tck_i or posedge test_logic_reset_i) begin
   end
 end
 
-//------------ EXTEST --------------
+// EXTEST 
 // It is used to update the output portions of the Boundary Scan Register (BSR) with the values 
 // from sample_preload first and then future extest values
 
@@ -148,7 +156,7 @@ assign bs_chain_tdi_o = (sample_preload_select_i | extest_select_i) ? bsr_shift[
 assign bsr_o = bsr_extest_o;
 assign bsr_oe = bsr_extest_oe;
 
-// ----------------- DEBUG -----------------
+// DEBUG 
 // This is used to control and monitor the design through debug signals
 
 always @(posedge tck_i or posedge test_logic_reset_i) begin

@@ -45,47 +45,47 @@ module analog_sanitizer (
     //      - This prevents oscillation around the threshold levels
     // ---------------------------------------------------------
 
-    sync_and_filter sync_and_filter_inst1 #(
+    sync_and_filter #(
         .CTR_WIDTH(4),
         .HIGH_THRESH(12), 
         .LOW_THRESH(3) 
-    ) (
+    ) sync_and_filter_inst1 (
         .clk_i(clk_i),
         .rst_i(rst_i),
-        .async_in(comp_i),
-        .clean_out(comp_o)
+        .async_i(comp_i),
+        .clean_out_o(comp_o)
     );
 
-    sync_and_filter sync_and_filter_inst2 #(
+    sync_and_filter #(
         .CTR_WIDTH(4),
         .HIGH_THRESH(12),
         .LOW_THRESH(3)
-    ) (
+    ) sync_and_filter_inst2 (
         .clk_i(clk_i),
         .rst_i(rst_i),
-        .async_in(sat_hi_i),
-        .clean_out(sat_hi_o)
+        .async_i(sat_hi_i),
+        .clean_out_o(sat_hi_o)
     );
 
-    sync_and_filter sync_and_filter_inst3 #(
+    sync_and_filter #(
         .CTR_WIDTH(4),
         .HIGH_THRESH(12),
         .LOW_THRESH(3)
-    ) (
+    ) sync_and_filter_inst3 (
         .clk_i(clk_i),
         .rst_i(rst_i),
-        .async_in(sat_lo_i),
-        .clean_out(sat_lo_o)
+        .async_i(sat_lo_i),
+        .clean_out_o(sat_lo_o)
     );
 
-    sync_and_filter sync_and_filter_inst4 #(
+    sync_and_filter #(
         .CTR_WIDTH(4),
         .HIGH_THRESH(12),
         .LOW_THRESH(3)
-    ) (
+    ) sync_and_filter_inst4 (
         .clk_i(clk_i),
         .rst_i(rst_i),
-        .async_in(ref_ok_i),
-        .clean_out(ref_ok_o)
+        .async_i(ref_ok_i),
+        .clean_out_o(ref_ok_o)
     );
 endmodule

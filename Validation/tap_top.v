@@ -166,6 +166,7 @@ output  shift_dr_o;
 output  pause_dr_o;
 output  update_dr_o;
 output  capture_dr_o;
+output  test_logic_reset_o;
 
 // Select signals for boundary scan or mbist
 output  extest_select_o;
