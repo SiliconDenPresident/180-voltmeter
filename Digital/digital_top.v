@@ -27,7 +27,7 @@ module digital_top (
 
     // Digital Signals
     input wire clk_i,
-    input wire rst_i,
+    input wire rst_n_i,
 
     // -- State Machine Signals
     input wire [1:0] mode_sel_i,
@@ -82,7 +82,7 @@ module digital_top (
     // Analog 
     analog_sanitizer analog_sanitizer_inst (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_i(rst_n_i),
         .comp_i(comp_i),
         .sat_hi_i(sat_hi_i),
         .sat_lo_i(sat_lo_i),
@@ -96,7 +96,7 @@ module digital_top (
     // State Machine
     state_machine state_machine_inst (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_i(rst_n_i),
         .comp_i(comp_o),
         .sat_hi_i(sat_hi_o),
         .sat_lo_i(sat_lo_o),
@@ -117,7 +117,7 @@ module digital_top (
     // Counter
     counter counter_inst (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_i(rst_n_i),
         .en_i(counter_en),
         .clear_i(counter_clear),
         .limit_i(counter_limit),
@@ -128,31 +128,18 @@ module digital_top (
 
     // SPI slave instance
     spi_slave #(
-        .N(32),               // 32-bit data width
-        .CPOL(1'b0),          // Clock polarity 0
-        .CPHA(1'b0),          // Clock phase 0
-        .PREFETCH(3)          // 3 cycle prefetch (must be <= N-5)
+        .SPI_MODE(0)
     ) spi_slave_inst (
-        .clk_i(clk_i),        // System clock
-        .spi_ssel_i(spi_cs_i),    // Chip select (active low)
-        .spi_sck_i(spi_sclk_i),   // SPI clock
-        .spi_mosi_i(spi_mosi_i),  // Master out, slave in
-        .spi_miso_o(spi_miso_o),  // Master in, slave out
-        
-        // Parallel data interface
-        .di_req_o(spi_di_req),    // Data input request
-        .di_i(spi_data_in[31:0]), // Data to send to master
-        .wren_i(done),            // Write enable
-        .wr_ack_o(spi_wr_ack),    // Write acknowledge
-        .do_valid_o(interrupt_o), // Data output valid
-        .do_o(spi_data_out[31:0]), // Received data
-        
-        // Debug ports
-        .do_transfer_o(spi_do_transfer),
-        .wren_o(spi_wren_dbg),
-        .rx_bit_next_o(spi_rx_bit_next),
-        .state_dbg_o(spi_state_dbg[3:0]),
-        .sh_reg_dbg_o(spi_sh_reg_dbg[31:0])
+        .i_Rst_L(rst_n_i),
+        .i_Clk(clk_i),
+        .o_RX_DV(spi_di_req),
+        .o_RX_Byte(spi_data_in),
+        .i_TX_DV(done),
+        .i_TX_Byte(spi_data_out),
+        .i_SPI_Clk(spi_sclk_i),
+        .o_SPI_MISO(spi_miso_o),
+        .i_SPI_MOSI(spi_mosi_i),
+        .i_SPI_CS_n(spi_cs_i)
     );
 
     //---------------------------------------------------------
