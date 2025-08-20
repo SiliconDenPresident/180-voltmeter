@@ -21,9 +21,9 @@
 //              More info: https://en.wikipedia.org/wiki/Serial_Peripheral_Interface_Bus#Mode_numbers
 ///////////////////////////////////////////////////////////////////////////////
 
-module spi_slave
-  #(parameter SPI_MODE = 0)
-  (
+module spi_slave #(
+  parameter SPI_MODE = 0
+  )(
    // Control/Data Signals,
    input            i_Rst_L,    // FPGA Reset, active low
    input            i_Clk,      // FPGA Clock

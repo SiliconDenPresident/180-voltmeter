@@ -82,7 +82,7 @@ module digital_top (
     // Analog 
     analog_sanitizer analog_sanitizer_inst (
         .clk_i(clk_i),
-        .rst_i(rst_n_i),
+        .rst_n_i(rst_n_i),
         .comp_i(comp_i),
         .sat_hi_i(sat_hi_i),
         .sat_lo_i(sat_lo_i),
@@ -96,7 +96,7 @@ module digital_top (
     // State Machine
     state_machine state_machine_inst (
         .clk_i(clk_i),
-        .rst_i(rst_n_i),
+        .rst_n_i(rst_n_i),
         .comp_i(comp_o),
         .sat_hi_i(sat_hi_o),
         .sat_lo_i(sat_lo_o),
@@ -117,7 +117,7 @@ module digital_top (
     // Counter
     counter counter_inst (
         .clk_i(clk_i),
-        .rst_i(rst_n_i),
+        .rst_n_i(rst_n_i),
         .en_i(counter_en),
         .clear_i(counter_clear),
         .limit_i(counter_limit),

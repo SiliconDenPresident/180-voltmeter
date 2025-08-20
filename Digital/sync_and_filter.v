@@ -23,7 +23,7 @@ module sync_and_filter #(
     parameter LOW_THRESH  = 3          // value at/below = logic 0
 )(
     input  wire clk_i,
-    input  wire rst_i,
+    input  wire rst_n_i,
     input  wire async_i,
     output wire clean_out_o
 );
@@ -32,8 +32,8 @@ module sync_and_filter #(
     reg clean_out;
     
     // 1. Two-FF synchronizer
-    always @(posedge clk_i or posedge rst_i) begin
-        if (rst_i) begin
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (rst_n_i) begin
             sync_ff1 <= 1'b0;
             sync_ff2 <= 1'b0;
         end else begin
@@ -43,9 +43,9 @@ module sync_and_filter #(
     end
 
     // 2. Saturating Up/Down Counter
-    always @(posedge clk_i or posedge rst_i) begin
-        if (rst_i) begin
-            ctr       <= {CTR_WIDTH{1'b0}};
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (rst_n_i) begin
+            ctr <= {CTR_WIDTH{1'b0}};
             clean_out <= 1'b0;
         end else begin
             // Increment or decrement

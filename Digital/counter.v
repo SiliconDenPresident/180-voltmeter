@@ -19,7 +19,7 @@
 
 module counter (
     input  wire clk_i,
-    input  wire rst_i,
+    input  wire rst_n_i,
     input  wire en_i,
     input  wire clear_i,
     input  wire [15:0] limit_i,
@@ -27,29 +27,31 @@ module counter (
     output reg done_o,
     output reg [15:0] count_o
 );
-    always @(posedge clk_i or posedge rst_i) begin
-        if (rst_i || clear_i) begin
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (rst_n_i) begin
             busy_o  <= 1'b0;
             done_o  <= 1'b0;
             count_o <= 16'd0;
-        end else begin  
-            if(en_i) begin
-                if(busy_o) begin
-                    if(count_o == limit_i) begin
-                        busy_o <= 1'b0;
-                        done_o <= 1'b1;
-                    end else begin
-                        count_o <= count_o + 1'b1;
+        end else begin
+            if(clear_i) begin
+                busy_o <= 1'b0;
+                done_o <= 1'b0;
+                count_o <= 16'd0;
+            end else begin
+                if(en_i) begin
+                    if(busy_o) begin
+                        if(count_o == limit_i) begin
+                            busy_o <= 1'b0;
+                            done_o <= 1'b1;
+                        end else begin
+                            count_o <= count_o + 1'b1;
+                        end
                     end
                 end else begin
                     busy_o <= 1'b1;
                     done_o <= 1'b0;
                     count_o <= 16'd0;
                 end
-            end else begin
-                busy_o <= 1'b0;
-                done_o <= 1'b0;
-                count_o <= 16'd0;
             end
         end
     end

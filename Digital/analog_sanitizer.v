@@ -20,7 +20,7 @@
 
 module analog_sanitizer (
     input wire clk_i,
-    input wire rst_i,
+    input wire rst_n_i,
     input wire comp_i,
     input wire sat_hi_i,
     input wire sat_lo_i,
@@ -51,7 +51,7 @@ module analog_sanitizer (
         .LOW_THRESH(3) 
     ) sync_and_filter_inst1 (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_n_i(rst_n_i),
         .async_i(comp_i),
         .clean_out_o(comp_o)
     );
@@ -62,7 +62,7 @@ module analog_sanitizer (
         .LOW_THRESH(3)
     ) sync_and_filter_inst2 (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_n_i(rst_n_i),
         .async_i(sat_hi_i),
         .clean_out_o(sat_hi_o)
     );
@@ -73,7 +73,7 @@ module analog_sanitizer (
         .LOW_THRESH(3)
     ) sync_and_filter_inst3 (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_n_i(rst_n_i),
         .async_i(sat_lo_i),
         .clean_out_o(sat_lo_o)
     );
@@ -84,7 +84,7 @@ module analog_sanitizer (
         .LOW_THRESH(3)
     ) sync_and_filter_inst4 (
         .clk_i(clk_i),
-        .rst_i(rst_i),
+        .rst_n_i(rst_n_i),
         .async_i(ref_ok_i),
         .clean_out_o(ref_ok_o)
     );
