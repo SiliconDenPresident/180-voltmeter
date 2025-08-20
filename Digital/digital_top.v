@@ -37,11 +37,11 @@ module digital_top (
     output wire ref_sign_o,
 
     // -- SPI Signals
-    input wire interrupt_i,
     input wire spi_sclk_i,
     input wire spi_cs_i,
     input wire spi_mosi_i,
     output wire spi_miso_o,
+    output wire interrupt_o,
 
     // -- Validation Signals
     input wire [7:0] dbg_i,     // Debug input signals
@@ -65,9 +65,9 @@ module digital_top (
     wire comp_o, sat_hi_o, sat_lo_o, ref_ok_o;  // Sanitized analog signals
 
     // SPI interface signals
+    wire spi_di_req;          // SPI data input request
     wire [31:0] spi_data_in;  // SPI data to send to master
     wire spi_wr_ack;          // SPI write acknowledge
-    wire spi_do_valid;        // SPI data output valid
     wire [31:0] spi_data_out; // SPI received data
     wire spi_do_transfer;     // SPI data transfer flag
     wire spi_wren_dbg;        // SPI write enable debug
@@ -140,11 +140,11 @@ module digital_top (
         .spi_miso_o(spi_miso_o),  // Master in, slave out
         
         // Parallel data interface
-        .di_req_o(interrupt_i),    // Data input request
+        .di_req_o(spi_di_req),    // Data input request
         .di_i(spi_data_in[31:0]), // Data to send to master
         .wren_i(done),            // Write enable
         .wr_ack_o(spi_wr_ack),    // Write acknowledge
-        .do_valid_o(spi_do_valid), // Data output valid
+        .do_valid_o(interrupt_o), // Data output valid
         .do_o(spi_data_out[31:0]), // Received data
         
         // Debug ports
@@ -158,9 +158,6 @@ module digital_top (
     //---------------------------------------------------------
     // Assignments
     //---------------------------------------------------------
-
-    // Connect data_valid_o to SPI slave's do_valid_o
-    assign data_valid_o = spi_do_valid;
 
     // TODO: Add logic to handle spi_data_in and spi_data_out based on your protocol
     // For now, we'll set some default values

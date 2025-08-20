@@ -29,12 +29,12 @@ module mixed_top(
     input wire [1:0] mode_sel_i,
 
     // -- SPI signals
-    input wire interrupt_i,
     input wire spi_sclk_i,
     input wire spi_cs_i,
     input wire spi_mosi_i,
     output wire spi_miso_o,
-
+    output wire interrupt_o,
+    
     // -- JTAG signals 
     input wire tck_i,
     input wire trst_i,
@@ -135,11 +135,11 @@ module mixed_top(
         .ref_ok_i(ref_ok),
 
         // SPI Signals
-        .interrupt_i(interrupt_i),
         .spi_sclk_i(spi_sclk_i),
         .spi_cs_i(spi_cs_i),
         .spi_mosi_i(spi_mosi_i),
         .spi_miso_o(spi_miso_o),
+        .interrupt_o(interrupt_o),
 
         // Validation Signals
         .dbg_o(dbg_i),
