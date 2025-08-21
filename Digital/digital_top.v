@@ -43,17 +43,14 @@ module digital_top (
     output wire spi_miso_o,
     output wire interrupt_o,
 
-    // -- Validation Signals
-    input wire [7:0] dbg_i,     // Debug input signals
-    output wire [15:0] dbg_o    // Debug output signals
+    // -- Debug Interface Signals
+    input wire [31:0] dbg_ctrl_i,     // Debug control input signals
+    output wire [31:0] dbg_status_o    // Debug status output signals
 );
     //---------------------------------------------------------
     // Declarations
     //---------------------------------------------------------
 
-    // Analog Parameters, Wires, & Registers
-
-    // Digital Parameters, Wires, & Registers
     wire [15:0] counter_limit;  // Counter limit value from state machine
     wire [15:0] counter_count;  // Current counter value
     wire counter_en;           // Counter enable signal
@@ -63,17 +60,6 @@ module digital_top (
     wire done;                // State machine done signal
     wire range_error_o;       // Range error signal
     wire comp_o, sat_hi_o, sat_lo_o, ref_ok_o;  // Sanitized analog signals
-
-    // SPI interface signals
-    wire spi_di_req;          // SPI data input request
-    wire [31:0] spi_data_in;  // SPI data to send to master
-    wire spi_wr_ack;          // SPI write acknowledge
-    wire [31:0] spi_data_out; // SPI received data
-    wire spi_do_transfer;     // SPI data transfer flag
-    wire spi_wren_dbg;        // SPI write enable debug
-    wire spi_rx_bit_next;     // SPI next bit to receive
-    wire [3:0] spi_state_dbg; // SPI state machine debug
-    wire [31:0] spi_sh_reg_dbg; // SPI shift register debug
 
     //---------------------------------------------------------
     // Instantiations
@@ -132,10 +118,10 @@ module digital_top (
     ) spi_slave_inst (
         .i_Rst_L(rst_n_i),
         .i_Clk(clk_i),
-        .o_RX_DV(spi_di_req),
-        .o_RX_Byte(spi_data_in),
+        .o_RX_DV(interrupt_o),
+        .o_RX_Byte(tx_data_in),
         .i_TX_DV(done),
-        .i_TX_Byte(spi_data_out),
+        .i_TX_Byte(tx_data_out),
         .i_SPI_Clk(spi_sclk_i),
         .o_SPI_MISO(spi_miso_o),
         .i_SPI_MOSI(spi_mosi_i),
@@ -146,12 +132,35 @@ module digital_top (
     // Assignments
     //---------------------------------------------------------
 
-    // TODO: Add logic to handle spi_data_in and spi_data_out based on your protocol
-    // For now, we'll set some default values
-    assign spi_data_in = 32'h0;  // Data to send to master
-    assign spi_wren = 1'b0;      // Write enable (can be controlled by your logic)
+    // Debug Status Register
+    assign tx_data_out[15:0] = counter_count;
+    assign tx_data_out[16] = comp_o;
+    assign tx_data_out[17] = sat_hi_o;
+    assign tx_data_out[18] = sat_lo_o;
+    assign tx_data_out[19] = ref_ok_o;
+    assign tx_data_out[20:21] = afe_sel_o;
+    assign tx_data_out[22:24] = range_sel_o;
+    assign tx_data_out[25] = afe_reset_o;
+    assign tx_data_out[26] = ref_sign_o;
+    assign tx_data_out[27] = range_error_o;
+    assign tx_data_out[28] = done;
+    assign tx_data_out[29] = counter_done;
+    assign tx_data_out[30] = counter_en;
+    assign tx_data_out[31] = counter_clear;
 
-    // Debug output - you can modify this based on what you want to observe
-    assign dbg_o = {spi_state_dbg, 12'h0};
+    assign dbg_status_o[15:0] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[15:0] : counter_count;
+    assign dbg_status_o[16] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[16] : comp_o;
+    assign dbg_status_o[17] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[17] : sat_hi_o;
+    assign dbg_status_o[18] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[18] : sat_lo_o;
+    assign dbg_status_o[19] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[19] : ref_ok_o;
+    assign dbg_status_o[20:21] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[20:21] : afe_sel_o;
+    assign dbg_status_o[22:24] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[22:24] : range_sel_o;
+    assign dbg_status_o[25] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[25] : afe_reset_o;
+    assign dbg_status_o[26] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[26] : ref_sign_o;
+    assign dbg_status_o[27] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[27] : range_error_o;
+    assign dbg_status_o[28] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[28] : done;
+    assign dbg_status_o[29] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[29] : counter_done;
+    assign dbg_status_o[30] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[30] : counter_en;
+    assign dbg_status_o[31] = tx_data_in[31];
 
 endmodule
