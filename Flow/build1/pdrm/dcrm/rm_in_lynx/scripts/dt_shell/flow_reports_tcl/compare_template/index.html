@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!--  This is the table compare report in development -->
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Table Compare Report</title>
+  <style type="text/css" class="init"></style>
+  <!-- File referenced in next link need not be present.
+       Used as a bookmark to find this file on the server, and must precede all other link entries.
+     -->
+  <link rel="stylesheet" href="not_present.css">
+  <link rel="stylesheet" href="include/table_compare.css">
+  <script type="text/javascript" charset="utf8" src="include/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" charset="utf8" src="include/tablednd.js"></script>
+  <script type="text/javascript" charset="utf8" src="include/TableCompare.js"></script>
+  <script type="text/javascript" language="javascript" class="init">
+    var data_directory = 'data';
+  </script>
+</head>
+<body onload="document_loaded();">
+  <noscript>Please enable JavaScript in your browser for full Lynx Web functionality.</noscript>
+  <div id="control_anchor" class="button_bar"></div>
+  <div id="lynx_status" class="status"></div>
+  <div id="table_div">
+    <!-- <div id="table_anchor"></div> -->
+  </div>
+  <!-- Styled invisible -->
+  <div id="lynx_stub">invisible stub</div>
+  <!-- ################### -->
+  <!-- shadowboxed dialogs -->
+  <!-- ################### -->
+  <!-- pickTablesModal is the entire screen.  Purpose here is to turn it dark gray when .show() called on this div -->
+  <div id="pickTablesModal" class="modal">
+    <div class="modal-content">
+      <div class="popup_left_side popup_top_label">
+        <p>Choose Tables</p><img src="./include/help.png" class="help-icon" alt="HELP" id="table_help_icon">
+      </div>
+      <!-- Width of this div must match, approximately,  width of enclosing div. -->
+      <div class="popup_left_side popup_main_content">
+        <table id="tables_table" class="popup_scrollable_table">
+        </table>
+      </div>
+      <div class="popup_button_holder">
+           <button class="modal-content-button" id="choose_tables_done_button" onclick="$('#pickTablesModal').hide();user_choices_complete('tables');">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pickRowsModal" class="modal">
+    <div class="modal-content">
+      <div class="popup_left_side popup_top_label">
+        <p>Choose Rows</p><img src="./include/help.png" class="help-icon" alt="HELP" id="row_help_icon">
+      </div>
+      <div class="popup_left_side popup_main_content">
+        <table id="rows_table" class="popup_scrollable_table">
+        </table>
+      </div>
+      <div class="popup_button_holder">
+           <button class="modal-content-button" id="choose_rows_done_button" onclick="$('#pickRowsModal').hide();user_choices_complete('rows');">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pickColsModal" class="modal">
+    <div class="modal-content">
+      <div class="popup_left_side popup_top_label">
+        <p>Choose Columns</p><img src="./include/help.png" class="help-icon" alt="HELP" id="column_help_icon">
+      </div>
+      <div class="popup_left_side popup_main_content">
+        <table id="columns_table" class="popup_scrollable_table">
+        </table>
+      </div>
+      <div class="popup_button_holder">
+           <button class="modal-content-button" id="choose_cols_done_button" onclick="$('#pickColsModal').hide();user_choices_complete('cols');">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="helpModal" class="modal">
+    <div class="modal-help-content">
+      <div class="popup_left_side popup_top_label">
+        <H3>Help</H3>
+      </div>
+      <div class="popup_left_side popup_help_content">
+        <p>
+          <u><b>Tables</b></u><br/>
+          Tables to choose from are in the data directory, and they are listed in tbl.cfg in the same directory.<br/>
+          Manage the tables being displayed with the Choose Tables button.<br/>
+          You can reorder the tables by dragging/dropping rows in that table.
+        </p>
+        <p>
+          <u><b>Rows</b></u><br/>
+          Rows to display are decided by contents of the reference table chosen.<br/>
+          You can set initial rows to display by listing them in format.cfg in the include directory like this:<br/>
+          ROWS|name 1|name 2| ... |name n<br/>
+          These settings can be overridden while viewing the report.<br/>
+          Manage the rows being displayed with the Choose Rows button.<br/>
+          You can reorder the rows displayed by dragging/dropping rows in that table.
+        </p>
+        <p>
+          <u><b>Columns</b></u><br/>
+          Columns to display are decided by contents of the reference table chosen.<br/>
+          You can set initial columns to display by listing them in format.cfg in the include directory like this:<br/>
+          HEADER|name 1|name 2| ... |name n<br/>
+          These settings can be overridden while viewing the report.<br/>
+          Manage the columns being displayed with the Choose Columns button.<br/>
+          You can reorder the columns displayed by dragging/dropping rows in that table.
+        </p>
+        <p>
+          <u><b>Cell Coloring</b></u><br/>
+          Cell background colors are determined by coloring rules found in the format.cfg file in the data directory.<br/>
+          There are example rules in that file.<br/>
+          Rules have the following format:<br/>
+          FORMAT|metric_name|light_pct|medium_pct|dark_pct|abs_threshold|improves<br/>
+          <u>metric_name:</u> the column name to color<br/>
+          <u>light_pct:</u> Percent change from reference that triggers a light background color.<br/>
+          <u>medium_pct:</u> Percent change from reference that triggers a medium background color.<br/>
+          <u>dark_pct:</u> Percent change from reference that triggers a dark background color.<br/>
+          <u>abs_threshold:</u> If the absolute value of the delta change from the reference is more than 0, <br/>
+          and <= this abs_threshold, the value is grayed out, and no other coloring rules are applied.<br/>
+          <u>improves:</u> smaller or larger are the values here. Smaller means that if numbers are smaller than the reference, they are colored green, otherwise they are colored red.  Larger is the opposite.<br/>
+        </p>
+      </div>
+      <div class="popup_button_holder">
+           <button class="modal-content-button" id="choose_cols_done_button" onclick="$('#helpModal').hide();">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loadingModal" class="modal">
+    <div class="modal-content">
+      <p>Loading...</p>
+    </div>
+  </div>
+
+  <script type="text/javascript" language="javascript">
+    $( document ).ready( init() );
+  </script>
+</body>
+</html>

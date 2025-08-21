@@ -1,0 +1,23 @@
+## -----------------------------------------------------------------------------
+## HEADER_MSG  Lynx Design System: Baseline Flow
+## HEADER_MSG  Version 2019.03-SP2
+## HEADER_MSG  Copyright (c) 2019 Synopsys
+## HEADER_MSG  Perforce Label: lynx_flow_2019.03-SP2
+## -----------------------------------------------------------------------------
+## DESCRIPTION:
+## * Common config file for example DT reports
+## -----------------------------------------------------------------------------
+
+## -----------------------------------------------------------------------------
+## Format:
+## name | value
+##   name  : Some name
+##   value : Some value to associate with name
+## The example DT reports only support "publish_dir". Extend as needed.
+## -----------------------------------------------------------------------------
+
+publish_dir | /global/lynx_home/PUBLISH/Lynx
+
+## -----------------------------------------------------------------------------
+## End Of File
+## -----------------------------------------------------------------------------

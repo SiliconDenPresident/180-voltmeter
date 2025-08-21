@@ -1,0 +1,30 @@
+LYNX_BEGIN|lynx_table_merge|my_table_merge
+
+TABLE_BEGIN
+
+DATA_BEGIN
+HEADER|Block|Group1|Group1|Group2|Group2
+HEADER|Block|Metric1|Metric2|Metric3|Metric4
+VALUE|CPU|1|2|3|4
+VALUE|DMA|2|3|4|5
+VALUE|DDR|3|4|5|6
+VALUE|MEM|4|5|6|7
+DATA_END
+
+ATTR_BEGIN
+HEADER|#ffffff:#808080|#000000:#c0e090|#000000:#c0e090|#000000:#9595ea|#000000:#9595ea
+HEADER|#ffffff:#808080|#000000:#ffffff|#000000:#ffffff|#000000:#ffffff|#000000:#ffffff
+VALUE|#ffffff:#000000|#000000:#ffffff|#000000:#f0f0f0|#000000:#e0e0e0|#000000:#d0d0d0
+VALUE|#ffffff:#000000|#000000:#ffffff|#000000:#f0f0f0|#000000:#e0e0e0|#000000:#d0d0d0
+VALUE|#ffffff:#000000|#000000:#ffffff|#000000:#f0f0f0|#000000:#e0e0e0|#000000:#d0d0d0
+VALUE|#ffffff:#000000|#000000:#ffffff|#000000:#f0f0f0|#000000:#e0e0e0|#000000:#d0d0d0
+ATTR_END
+
+FORMAT_BEGIN
+TITLE|Hello World Table Title
+SUBTITLE|Hello World Table Sub-Title
+FORMAT_END
+
+TABLE_END
+
+LYNX_END

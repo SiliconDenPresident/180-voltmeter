@@ -1,0 +1,174 @@
+##########################################################################################
+# Tool: IC Compiler II
+# Script: functional_eco.tcl
+# Version: P-2019.03-SP2
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+##########################################################################################
+
+source -echo ./rm_setup/icc2_pnr_setup.tcl
+set REPORT_PREFIX $FUNCTIONAL_ECO_BLOCK_NAME
+
+open_lib $DESIGN_LIBRARY
+copy_block -from ${DESIGN_NAME}/${FUNCTIONAL_ECO_FROM_BLOCK_NAME} -to ${DESIGN_NAME}/${FUNCTIONAL_ECO_BLOCK_NAME}
+current_block ${DESIGN_NAME}/${FUNCTIONAL_ECO_BLOCK_NAME}
+link_block
+
+if {![file exists [which $FUNCTIONAL_ECO_VERILOG_FILE]]} {
+        puts "RM-error: FUNCTIONAL_ECO_VERILOG_FILE is not specified or invalid. Exiting...."
+        exit 
+}
+
+if {$FUNCTIONAL_ECO_ACTIVE_SCENARIO_LIST != ""} {
+	set_scenario_status -active false [get_scenarios -filter active]
+	set_scenario_status -active true $FUNCTIONAL_ECO_ACTIVE_SCENARIO_LIST
+}
+
+source -echo settings.non_persistent.tcl ;# non-persistent settings to be re-applied in each session
+
+####################################
+## Pre-Functional ECO customizations
+####################################
+if {[file exists [which $TCL_USER_FUNCTIONAL_ECO_PRE_SCRIPT]]} {
+        puts "RM-info: Sourcing [which $TCL_USER_FUNCTIONAL_ECO_PRE_SCRIPT]"
+        source $TCL_USER_FUNCTIONAL_ECO_PRE_SCRIPT
+} elseif {$TCL_USER_FUNCTIONAL_ECO_PRE_SCRIPT != ""} {
+        puts "RM-error: TCL_USER_FUNCTIONAL_ECO_PRE_SCRIPT($TCL_USER_FUNCTIONAL_ECO_PRE_SCRIPT) is invalid. Please correct it."
+}
+
+redirect -tee -file ${REPORTS_DIR}/${REPORT_PREFIX}.report_app_options.start {report_app_options -non_default *}
+redirect -file ${REPORTS_DIR}/${REPORT_PREFIX}.report_lib_cell_purpose {report_lib_cell -objects [get_lib_cells] -column {full_name:20 valid_purposes}}
+
+####################################
+## Functional ECO
+####################################
+## Clear eco_change_status for all eco cells
+#  -quiet used in case there is no cell with defined(eco_change_status) exists
+remove_attribute [get_cell -quiet -hier -filter "defined(eco_change_status)"] eco_change_status
+
+## Functional ECO - both Freeze Silicon and Non-Freeze Silicon ECO flows are supported 
+if {$FUNCTIONAL_ECO_MODE == "freeze_silicon"} {
+
+	puts "RM-info: Running freeze silicon Functional ECO flow"
+
+	## Do netlist diff with the new verilog file to generate a change list
+	eco_netlist -by_verilog_file $FUNCTIONAL_ECO_VERILOG_FILE -write_changes eco_changes.tcl
+
+	## Enable freeze silicon ECO
+	set_app_options -name design.eco_freeze_silicon_mode -value true
+
+	source eco_changes.tcl
+
+	## Disable freeze silicon ECO
+	set_app_options -name design.eco_freeze_silicon_mode -value false
+	
+	## Check freeze silicon availability
+	redirect -file ${REPORTS_DIR}/${FUNCTIONAL_ECO_BLOCK_NAME}.check_freeze_silicon {check_freeze_silicon}
+
+	# Coarse placement
+	place_freeze_silicon
+	
+} else {
+
+	puts "RM-info: Running non-freeze silicon Functional ECO flow"
+
+	## Do netlist diff on the new verilog netlist to generate a change list
+	eco_netlist -by_verilog_file $FUNCTIONAL_ECO_VERILOG_FILE -write_changes eco_changes.tcl
+
+	source eco_changes.tcl
+
+	# Coarse placement
+	place_eco_cells -eco_changed_cells -no_legalize
+
+	## ECO legalization (MPI mode)
+	set place_eco_cells_cmd "place_eco_cells -eco_changed_cells -legalize_only -legalize_mode minimum_physical_impact -displacement_threshold $FUNCTIONAL_ECO_DISPLACEMENT_THRESHOLD"
+	if {$CHIP_FINISH_METAL_FILLER_LIB_CELL_LIST != "" || $CHIP_FINISH_NON_METAL_FILLER_LIB_CELL_LIST != ""} {
+		lappend place_eco_cells_cmd -remove_filler_references "$CHIP_FINISH_METAL_FILLER_LIB_CELL_LIST $CHIP_FINISH_NON_METAL_FILLER_LIB_CELL_LIST"
+	}
+	puts "RM-info: $place_eco_cells_cmd"
+	eval ${place_eco_cells_cmd}
+
+}
+
+connect_pg_net
+redirect -file ${REPORTS_DIR}/${FUNCTIONAL_ECO_BLOCK_NAME}.check_legality {check_legality -verbose} 
+
+## ECO routing
+#  Turn off timing-driven and crosstalk-driven for ECO routing 
+set_app_options -name route.global.timing_driven    -value false
+set_app_options -name route.track.timing_driven     -value false
+set_app_options -name route.detail.timing_driven    -value false 
+set_app_options -name route.global.crosstalk_driven -value false 
+set_app_options -name route.track.crosstalk_driven  -value false 
+route_eco -utilize_dangling_wires true -reroute modified_nets_first_then_others -open_net_driven true 
+
+########################################
+## Reinsert filler cells in changed area
+########################################
+## Metal filler (decap cells)
+if {$CHIP_FINISH_METAL_FILLER_LIB_CELL_LIST != ""} {
+	set create_stdcell_filler_metal_lib_cell_sorted [get_object_name [sort_collection -descending [get_lib_cells $CHIP_FINISH_METAL_FILLER_LIB_CELL_LIST] area]]
+	set create_stdcell_filler_metal_cmd "create_stdcell_filler -lib_cell [list $create_stdcell_filler_metal_lib_cell_sorted]"
+	if {$CHIP_FINISH_METAL_FILLER_PREFIX != ""} {
+		lappend create_stdcell_filler_metal_cmd -prefix $CHIP_FINISH_METAL_FILLER_PREFIX
+	}
+	puts "RM-info: $create_stdcell_filler_metal_cmd"
+	eval ${create_stdcell_filler_metal_cmd}
+	connect_pg_net
+	remove_stdcell_fillers_with_violation -post_eco true ;# -post_eco true option is required in PT-ECO flow
+}
+
+## Non-metal filler
+if {$CHIP_FINISH_NON_METAL_FILLER_LIB_CELL_LIST != ""} {
+	set create_stdcell_filler_non_metal_lib_cell_sorted [get_object_name [sort_collection -descending [get_lib_cells $CHIP_FINISH_NON_METAL_FILLER_LIB_CELL_LIST] area]]
+	set create_stdcell_filler_non_metal_cmd "create_stdcell_filler -lib_cell [list $create_stdcell_filler_non_metal_lib_cell_sorted]"
+	if {$CHIP_FINISH_NON_METAL_FILLER_PREFIX != ""} {
+		lappend create_stdcell_filler_non_metal_cmd -prefix $CHIP_FINISH_NON_METAL_FILLER_PREFIX
+	}
+	puts "RM-info: $create_stdcell_filler_non_metal_cmd"
+	eval ${create_stdcell_filler_non_metal_cmd}
+	connect_pg_net
+}
+
+########################################################
+## Incremental signoff_create_metal_fill in changed area
+########################################################
+## You can perform incremental signoff_create_metal_fill here.
+#  Please refer to chip_finish.tcl for details about signoff_create_metal_fill
+#  Ensure to append the option "-auto_eco true" to the signoff_create_metal_fill command to refill in the automatically detected changed area
+#	save_block
+#	signoff_create_metal_fill -auto_eco true ...
+
+####################################
+## Post-PT ECO customizations
+####################################
+if {[file exists [which $TCL_USER_FUNCTIONAL_ECO_POST_SCRIPT]]} {
+        puts "RM-info: Sourcing [which $TCL_USER_FUNCTIONAL_ECO_POST_SCRIPT]"
+        source $TCL_USER_FUNCTIONAL_ECO_POST_SCRIPT
+}
+
+if {$TCL_USER_CONNECT_PG_NET_SCRIPT != ""} {
+	if {[file exists [which $TCL_USER_CONNECT_PG_NET_SCRIPT]]} {
+		puts "RM-info: Sourcing [which $TCL_USER_CONNECT_PG_NET_SCRIPT]"
+  		source $TCL_USER_CONNECT_PG_NET_SCRIPT
+	} else {
+		puts "RM-error: TCL_USER_CONNECT_PG_NET_SCRIPT($TCL_USER_CONNECT_PG_NET_SCRIPT) is invalid. Please correct it."
+	}
+} else {
+	connect_pg_net
+	# For non-MV designs with more than one PG, you should use connect_pg_net in manual mode.
+}
+
+save_block
+save_lib
+
+####################################
+## Report and output
+####################################			 
+if {$REPORT_QOR} {source report_qor.tcl}
+
+
+print_message_info -ids * -summary
+echo [date] > functional_eco
+
+exit 
+

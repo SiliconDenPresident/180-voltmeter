@@ -1,0 +1,41 @@
+################################################################################
+# Synopsys(R) Reference Methodology in Lynx-RTM Release Notes
+# Version: P-2019.03-SP2
+# Copyright (C) 2014-2019 Synopsys, Inc. All rights reserved.
+################################################################################
+
+P-2019.03-SP2
+=============
+Reference Methodology in Lynx-RTM version P-2019.03-SP2 provides the 
+following new features, enhancements, and changes.
+
+Updated Files
+-------------
+*  Updated run_rm.tcl for linking DT-reports.
+*  Updated rm_icc2_dp_hier.xml to reflect changes in Makefile_dp_hier.
+*  Updated rm_icc2_pnr.xml to reflect changes in Makefile_pnr.
+
+P-2019.03
+=========
+Reference Methodology in Lynx-RTM version P-2019.03 provides the 
+following new features, enhancements, and changes.
+
+Updated Files
+-------------
+*  Updated the setup script for more robust behavior
+*  DC task are now default to use dcnxt_shell 
+*  Updated the run_rm.tcl script.
+   Create link for Design Compiler and IC Compiler II 
+   Reference Methodology (RM) reports in Design Tracker (DT)
+*  Use the latest (lynx/2019.03) DT shell script for Design Tracker, including 
+   the comparison reports and the Design Compiler Design Summary report.
+
+O-2018.06-SP4
+=============
+This is the initial release of "Running RM in Lynx-RTM". The READEME file is
+available in the following path:
+  - <RM>/rm_in_lynx/README.running_RM_in_Lynx_RTM.txt
+  
+For more information (including training slides), see 
+https://solvnet.synopsys.com/retrieve/3000048.html
+

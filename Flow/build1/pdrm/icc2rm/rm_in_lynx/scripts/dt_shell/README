@@ -1,0 +1,35 @@
+## -----------------------------------------------------------------------------
+## Design Tracker Example Scripts
+## -----------------------------------------------------------------------------
+
+user_menu_setup.tcl
+
+  On startup, the dt_shell will source this file:
+    ./scripts_global/dt_shell/user_menu_setup.tcl
+
+  If the above file does not exist, the dt_shell will source this file:
+    $SYNOPSYS_DT/auxx/dt_shell/user_menu_setup.tcl
+
+hello_world/*
+
+  These are pre-generated Design Tracker reports.
+  They are in "lynx_dt" format. Additional details are in the product documentation.
+  Copy these files into a project's "publish" directory.
+  Then use the the Design Tracker to view the files.
+  Or, view with the dt_shell application.
+
+$SYNOPSYS_DT/auxx/dt_shell/example_menus/*
+$SYNOPSYS_DT/auxx/dt_shell/example_reports/*
+
+  Example menus and reports.
+  These provide a simple model to follow for creating your own menus and reports.
+
+flow_menus/*
+flow_reports/*
+
+  Flow menus and reports.
+  These menus and reports follow the example model, and provide support for the Lynx R2G flow.
+
+## -----------------------------------------------------------------------------
+## End of File
+## -----------------------------------------------------------------------------

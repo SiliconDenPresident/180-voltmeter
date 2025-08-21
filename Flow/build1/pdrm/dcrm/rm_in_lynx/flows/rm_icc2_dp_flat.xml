@@ -1,0 +1,332 @@
+
+<!--
+## HEADER_MSG ============================================================================
+## HEADER_MSG RM_in_LYNX 
+## HEADER_MSG Script: rm_icc2_dp_flat.xml
+## HEADER_MSG Version: P-2019.03-SP2
+## HEADER_MSG Copyright (C) 2010-2019 Synopsys, Inc. All rights reserved.
+## HEADER_MSG ============================================================================
+## HEADER_MSG DESCRIPTION:
+## HEADER_MSG * Flow XML file for ICC2 RM 
+## HEADER_MSG * followed rm_setup/Makefile_dp_flat
+## HEADER_MSG OPEN IN Lynx Runtime Manager Flow Editor"
+## HEADER_MSG ============================================================================
+-->
+<file type="flow">
+  <attribute name="flow_name" value="rm_icc2_dp_flat"/>
+  <package type="tasks">
+    <package type="note">
+      <attribute name="name" value="note-2"/>
+      <attribute name="title" value="Optional Tasks"/>
+      <attribute name="text">
+        <value>These optional tasks are not tied into the flow by default but users can
+explicitly execute them or modify the flow to tie them in with an edge.</value>
+      </attribute>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-3"/>
+      <attribute name="title" value="Notes on place_io"/>
+      <attribute name="text">
+        <value>Follow default Makefile_dp_flat
+- PLACE_IO = true
+Hence we have the following sequence
+  pre_shaping --&gt; place_io --&gt; shaping
+
+To bypass place_io task -
+  right click &quot;enable_place_io&quot; and &quot;toggle&quot; it</value>
+      </attribute>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-4"/>
+      <attribute name="title" value="ICC II DP Flat"/>
+      <attribute name="text" value="Followed ICC2 RM - rm_setup/Makefile_dp_flat"/>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="title" value="Limitations"/>
+      <attribute name="text">
+        <value>Editing this flow is currently restricted
+- Task re-ordering will not implicitly alter the scripts. 
+  [The RM hard codes variables and script content with the task source and destination information.]
+- Necessary flow changes would need coordinated RM script/variable updates.
+- Changes to other task properties are acceptable (e.g. TEV(num_cores))
+- Changes to joiner enable/disable is acceptable</value>
+      </attribute>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="ENABLE_PLACE_IO"/>
+      <attribute name="step" value="rm_icc2"/>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="all"/>
+      <attribute name="step" value="rm_icc2"/>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="setup"/>
+      <attribute name="step" value="rm_icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="create_power"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="placement"/>
+      <attribute name="dst" value="create_power"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="export"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="export"/>
+      <attribute name="tool" value="icc2"/>
+      <attribute name="variable" value="|TEV(alternate_script)|$SEV(workarea_dir)/rm_icc2_dp_scripts/export.tcl"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="init_dp"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="setup"/>
+      <attribute name="dst" value="init_dp"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="place_io"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="pre_shaping"/>
+      <attribute name="dst" value="place_io"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="place_pins"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="create_power"/>
+      <attribute name="dst" value="place_pins"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="placement"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="shaping"/>
+      <attribute name="dst" value="placement"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="pre_shaping"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="init_dp"/>
+      <attribute name="dst" value="pre_shaping"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="pre_timing"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="place_pins"/>
+      <attribute name="dst" value="pre_timing"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="shaping"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="pre_shaping"/>
+      <attribute name="dst" value="shaping"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="timing_estimation"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="pre_timing"/>
+      <attribute name="dst" value="timing_estimation"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="view_copy"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="view_copy"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="view_in_place"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="view_in_place"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="write_data"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="timing_estimation"/>
+      <attribute name="dst" value="write_data"/>
+      <attribute name="tool" value="icc2"/>
+      <attribute name="variable" value="|TEV(alternate_script)|$SEV(workarea_dir)/rm_icc2_dp_scripts/write_data.tcl"/>
+    </package>
+  </package>
+  <package type="edges">
+    <package type="edge">
+      <attribute name="from" value="ENABLE_PLACE_IO"/>
+      <attribute name="to" value="shaping"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="create_power"/>
+      <attribute name="to" value="place_pins"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="init_dp"/>
+      <attribute name="to" value="pre_shaping"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="place_io"/>
+      <attribute name="to" value="ENABLE_PLACE_IO"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="place_pins"/>
+      <attribute name="to" value="pre_timing"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="placement"/>
+      <attribute name="to" value="create_power"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="pre_shaping"/>
+      <attribute name="to" value="place_io"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="pre_shaping"/>
+      <attribute name="to" value="shaping"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="pre_timing"/>
+      <attribute name="to" value="timing_estimation"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="setup"/>
+      <attribute name="to" value="init_dp"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="shaping"/>
+      <attribute name="to" value="placement"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="timing_estimation"/>
+      <attribute name="to" value="write_data"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="write_data"/>
+      <attribute name="to" value="all"/>
+    </package>
+  </package>
+  <package type="grid">
+    <attribute name="width" value="380"/>
+    <attribute name="height" value="580"/>
+  </package>
+  <package type="positions">
+    <package type="position">
+      <attribute name="name" value="note-2"/>
+      <attribute name="x" value="300"/>
+      <attribute name="y" value="430"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-3"/>
+      <attribute name="x" value="300"/>
+      <attribute name="y" value="160"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-4"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="x" value="310"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="ENABLE_PLACE_IO"/>
+      <attribute name="x" value="300"/>
+      <attribute name="y" value="230"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="all"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="550"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="setup"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="70"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="create_power"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="310"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="export"/>
+      <attribute name="x" value="330"/>
+      <attribute name="y" value="470"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="init_dp"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="150"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="place_io"/>
+      <attribute name="x" value="300"/>
+      <attribute name="y" value="190"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="place_pins"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="350"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="placement"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="270"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="pre_shaping"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="190"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="pre_timing"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="390"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="shaping"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="230"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="timing_estimation"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="430"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="view_copy"/>
+      <attribute name="x" value="330"/>
+      <attribute name="y" value="510"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="view_in_place"/>
+      <attribute name="x" value="310"/>
+      <attribute name="y" value="550"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="write_data"/>
+      <attribute name="x" value="80"/>
+      <attribute name="y" value="510"/>
+    </package>
+  </package>
+</file>

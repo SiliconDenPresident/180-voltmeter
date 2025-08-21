@@ -1,0 +1,23 @@
+LYNX_BEGIN|lynx_plot_trend_category|my_plot
+
+DATA_BEGIN
+LEGEND|Time|Metric1|Metric2|Metric3|Metric4
+VALUE|Time0|1|2|3|4
+VALUE|Time1|2|3|4|5
+VALUE|Time2|3|4|5|6
+VALUE|Time3|4|5|6|7
+VALUE|Time4|1|2|3|4
+VALUE|Time5|2|3|4|5
+VALUE|Time6|3|4|5|6
+VALUE|Time7|4|5|6|7
+VALUE|Time8|1|2|3|4
+VALUE|Time9|2|3|4|5
+DATA_END
+
+FORMAT_BEGIN
+TITLE|Hello World Plot Title
+SUBTITLE|Hello World Plot Sub-Title
+LEGEND|RIGHT
+FORMAT_END
+
+LYNX_END

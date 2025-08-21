@@ -1,0 +1,349 @@
+@font-face {
+  font-family: VeraSansMono;
+  src: url(VeraMono-webfont.woff);
+}
+* {
+  font-family: VeraSansMono, "Lucida Sans Typewriter", monospace;
+}
+#table_div {
+  width: 97%;
+  overflow-y: visible;
+  padding: 0;
+}
+.table_holder{
+  /* overflow-x: scroll; */
+}
+.fixed_table_div{
+  float: left;
+  height: auto;
+}
+.fixed_table{}
+.scroll_table_div{
+  overflow-x: scroll;
+  height: auto;
+}
+.scroll_table{}
+.extra_div{}
+body {
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+}
+table {
+    border-collapse: collapse;
+    border-style: 1px solid black;
+    white-space: nowrap;
+}
+th {
+    border: 1px solid black;
+}
+td {
+    border: 1px solid white;
+    text-align:right;
+    padding-right: 3px; /* take these 3 pix from the margin-left of the #table_div */
+}
+.help-icon{
+    width: 25px;
+    height: 25px;
+    position: relative;
+    top: 12px;
+    right: -10px;
+    font-size:8pt;
+}
+
+.row_header{
+    border: 1px solid black;
+    height:12px;
+}
+
+/* This is used to make the top row of the fixed table have a wider rhs so that it does not blend in when scrolling. */
+/*  Try using padding or margin of 1 extra pixel on rt in fixed_table_div.*/
+/*  THIS IS CHROME ONLY */
+.fixed_table_top_row{
+    /* border-right: 2px solid black; */
+}
+
+.fixed_table_row{}
+
+.table_control_area {
+    height: 15px; /* was 10px */
+    margin-bottom: 2px;
+    /*
+    position:fixed;
+    width:100px;
+    */
+}
+
+/* Fixing comp_table_row's height keeps highlighted_row's 2px border from making table height jumpy. */
+.comp_table_row{
+    height:14px !important;
+}
+/* The comp_table's font-size and the one in context.font in TableCompare.js must jive,
+   or setting consistent widths on all tables will never work. */
+.comp_table{
+    font-size:8pt;
+    table-layout: fixed;
+    /*margin-top:30px;*/
+    /* inline-block helps the case where there are too few columns, where there ends up being space between fixed col and the rest */
+    /* display: inline-block; */  /* Downside is jittery behavior on FF when moving mouse between cells of differing text widths. */
+}
+
+.button_bar {
+    height:12px;
+}
+.table_button {
+    background-color: #6666ff; /* Green is 4CAF50 */
+    border: none;
+    color: white;
+    padding: 1px 8px; /* topandbottom, leftandright */
+    margin: 0 1px 0 1px; /* top right bottom left */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    border-radius: 7px;
+    float:left;
+}
+.top_button {
+    background-color: #006699; /* Dark Teal Blue */
+    border: none;
+    color: white;
+    padding: 1px 8px; /* topandbottom, leftandright */
+    margin: 0 1px 0 1px; /* top right bottom left */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+}
+.state_area{
+
+    border: none;
+    color: gray;
+    padding: 1px 8px; /* topandbottom, leftandright */
+    margin: 0 1px 0 1px; /* top right bottom left */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+}
+.table_title {
+    margin: 1px;
+    color:#990000;
+    float:left;
+    font-size:10px;
+}
+
+#lynx_status {
+    color:#FF0000;
+    font-size: 10px;
+}
+
+/* an invisible dom element for file reads */
+#lynx_stub {
+    display: none;
+}
+
+/* Modal dialog -- this covers the whole screen and does background shading of other screen content */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+    transition: 0.4s;
+}
+
+/* Modal Content - the actual content of the modal dialog. */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    margin-top: 10vh;
+    padding: 20px;
+    border: 1px solid #888;
+    overflow: auto;
+
+    position:relative;
+    height:400px;
+    width:300px;
+    overflow:hidden;
+    /* max-width: 80%; */
+    /* max-height: 80vh; */
+}
+
+/* Special version for model help dialog. */
+.modal-help-content {
+    background-color: #fefefe;
+    margin: auto;
+    margin-top: 10vh;
+    padding: 20px;
+    border: 1px solid #888;
+    overflow: auto;
+
+    position:relative;
+    height:500px;
+    width:450px;
+    overflow:hidden;
+}
+
+/* Buttons inside a modal dialog's content */
+.modal-content-button {
+    background-color: #efefef;
+    color: #08519c;
+    border-color: #08519c;
+}
+.modal-content-button:hover {
+    background-color: #aaaaaa;
+}
+
+/* Model content checkbox lists only */
+.modal-checkboxes {
+    -webkit-column-width: 25em; /* Chrome, Safari, Opera */
+    -moz-column-width: 25em; /* Firefox */
+    column-width: 25em;
+}
+
+.popup_left_side{
+    left: 10px;
+}
+
+.popup_top_label{
+    position:absolute;
+    top:0px;
+    height:45px;
+    display: flex;
+}
+
+.popup_main_content {
+    position:absolute;
+    top:45px;
+    bottom:50px;
+    width:300px;
+    height:355px;
+    overflow:auto;
+}
+
+.popup_help_content {
+    position:absolute;
+    top:45px;
+    bottom:50px;
+    width:450px;
+    height:455px;
+    overflow:auto;
+    font-size: 10pt;
+}
+
+.popup_button_holder{
+    position:absolute;
+    bottom:0px;
+    height:40px;
+    width:100%;
+    left:0px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.popup_scrollable_table{
+    white-space:nowrap;
+    text-align:left;
+    overflow:auto;
+    height:auto;
+    width: 100%; /* trying to get scrollbar to stick to right side of table instead of the container */
+}
+
+.popup_table_header{
+    font-size: 11pt;
+    background-color: #9999ff;
+    color: #000000;
+    text-align: left;
+}
+
+.popup_checkbox_column{
+    width: 22px;
+}
+.popup_checkbox{
+    transform: scale(.85);
+    margin: 1px;
+}
+.popup_radio_column{
+    width: 25px;
+}
+.popup_chooser_cell{
+    text-align: left;
+    font-size: 8pt;
+}
+.popup_chooser_height{
+    line-height: 6px;
+}
+.highlighted_row{
+    border-top: 1px double #ff0000;
+    border-bottom: 1px double #ff0000;
+    opacity: 0.5;
+}
+.highlighted_row_header{
+    color: #ff0000 !important;
+    background-color: #ffffff !important;
+}
+.highlighted_cell{
+    font-weight: bold;
+    color: #ff0000 !important;
+}
+
+/* Has to be this name?!? */
+.myDragClass {
+    background-color: yellow;
+    /* display: block; */
+}
+.myDragClass td {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+/***********************************************************
+Colors used for comparison in QOR Summary
+************************************************************/
+/* Colors used to indicate high percentage/absolute QOR change.  Three shades of red and three
+shades of green are used to indicate different extremes of QOR change, and grey is used to
+indicate large QOR change on a metric which is just informational (i.e. not concerning if it degrades).
+Class names are shortcuts for dark/medium/light (d/m/l) and the colors red/green/gray (r/g/y).*/
+.below_threshold {
+  color:#bebebe;; /* just a guess */
+  background-color: #ffffff;
+}
+.dr {
+  color:#000000;
+  background-color: #ff9090;
+}
+.mr {
+  color:#000000;
+  background-color: #ffc0c0;
+}
+.lr {
+  color:#000000;
+  background-color: #fff0f0;
+}
+.dg {
+  color:#000000;
+  background-color: #90ff90;
+}
+.mg {
+  color:#000000;
+  background-color: #c0ffc0;
+}
+.lg {
+  color:#000000;
+  background-color: #f0fff0;
+}
+.regular_colors {
+  color:#000000;
+  background-color: #ffffff;
+}
+.header_colors {
+  color:#000000;
+  background-color: #aaaaaa;
+}

@@ -1,0 +1,23 @@
+## -----------------------------------------------------------------------------
+## HEADER_MSG  Lynx Design System: Baseline Flow
+## HEADER_MSG  Version 2019.03-SP2
+## HEADER_MSG  Copyright (c) 2019 Synopsys
+## HEADER_MSG  Perforce Label: lynx_flow_2019.03-SP2
+## -----------------------------------------------------------------------------
+## DESCRIPTION:
+## * Build config file for example DT reports
+## -----------------------------------------------------------------------------
+
+## -----------------------------------------------------------------------------
+## Format:
+## build_label | build_dir
+##   build_label : The label for the build in the report
+##   build_dir   : The build directory containing flow results
+## -----------------------------------------------------------------------------
+
+dhm1 | /global/lynx_dev/users/lynxreg/J-2014.09-SP2/flow_20181231/TSMC65LP.TSMC.A/T01_dhm_03.00/builds/dhm
+## dhm2 | /global/lynx_dev/users/lynxreg/J-2014.09-SP2/flow_20181231/TSMC65LP.TSMC.A/T01_dhm_03.00/builds/dhm
+
+## -----------------------------------------------------------------------------
+## End Of File
+## -----------------------------------------------------------------------------

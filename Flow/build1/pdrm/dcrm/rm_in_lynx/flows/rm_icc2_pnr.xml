@@ -1,0 +1,378 @@
+
+<!--
+## HEADER_MSG ============================================================================
+## HEADER_MSG RM_in_LYNX 
+## HEADER_MSG Script: rm_icc2_pnr.xml
+## HEADER_MSG Version: P-2019.03-SP2
+## HEADER_MSG Copyright (C) 2010-2019 Synopsys, Inc. All rights reserved.
+## HEADER_MSG ============================================================================
+## HEADER_MSG DESCRIPTION:
+## HEADER_MSG * Flow XML file for ICC2 RM 
+## HEADER_MSG * followed rm_setup/Makefile_pnr
+## HEADER_MSG OPEN IN Lynx Runtime Manager Flow Editor"
+## HEADER_MSG ============================================================================
+-->
+<file type="flow">
+  <attribute name="flow_name" value="rm_icc2_pnr"/>
+  <package type="tasks">
+    <package type="note">
+      <attribute name="name" value="note-2"/>
+      <attribute name="title" value="Optional Tasks"/>
+      <attribute name="text">
+        <value>These optional tasks are not tied into the flow by default but users can
+explicitly execute them or modify the flow to tie them in with an edge.
+
+pt_eco - For classic PT-ECO flow
+pt_eco_incremental* - For Galaxy incremental ECO flow (two steps)</value>
+      </attribute>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-3"/>
+      <attribute name="title" value="ICC II PNR"/>
+      <attribute name="text" value="Followed ICC2 RM - rm_setup/Makefile_pnr"/>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="title" value="Limitations"/>
+      <attribute name="text">
+        <value>Editing this flow is currently restricted
+- Task re-ordering will not implicitly alter the scripts. 
+  [The RM hard codes variables and script content with the task source and destination information.]
+- Necessary flow changes would need coordinated RM script/variable updates.
+- Changes to other task properties are acceptable (e.g. TEV(num_cores))
+- Changes to joiner enable/disable is acceptable</value>
+      </attribute>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="all"/>
+      <attribute name="step" value="rm_icc2"/>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="setup"/>
+      <attribute name="step" value="rm_icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="chip_finish"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="route_opt"/>
+      <attribute name="dst" value="chip_finish"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="clock_opt_cts"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="place_opt"/>
+      <attribute name="dst" value="clock_opt_cts"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="clock_opt_opto"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="clock_opt_cts"/>
+      <attribute name="dst" value="clock_opt_opto"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="export"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="export"/>
+      <attribute name="tool" value="icc2"/>
+      <attribute name="variable" value="|TEV(alternate_script)|$SEV(workarea_dir)/rm_icc2_pnr_scripts/export.tcl"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="fm"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="write_data"/>
+      <attribute name="dst" value="fm"/>
+      <attribute name="tool" value="fm"/>
+      <attribute name="variable" value="|TEV(alternate_script)|$SEV(workarea_dir)/rm_icc2_pnr_scripts/fm.tcl"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="icv_in_design"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="chip_finish"/>
+      <attribute name="dst" value="icv_in_design"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="init_design"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="setup"/>
+      <attribute name="dst" value="init_design"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="place_opt"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="init_design"/>
+      <attribute name="dst" value="place_opt"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="pt_eco"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="route_opt"/>
+      <attribute name="dst" value="pt_eco"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="pt_eco_incremental_1"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="route_opt"/>
+      <attribute name="dst" value="pt_eco_incremental_1"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="pt_eco_incremental_2"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="pt_eco_incremental_1"/>
+      <attribute name="dst" value="pt_eco_incremental_2"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="redhawk_in_design_pnr"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="redhawk_in_design_pnr"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="route_auto"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="clock_opt_opto"/>
+      <attribute name="dst" value="route_auto"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="route_opt"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="route_auto"/>
+      <attribute name="dst" value="route_opt"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="summary"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="summary"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="vc_lp"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="write_data"/>
+      <attribute name="dst" value="vc_lp"/>
+      <attribute name="tool" value="vc_static"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="write_data"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="write_data"/>
+      <attribute name="tool" value="icc2"/>
+      <attribute name="variable" value="|TEV(alternate_script)|$SEV(workarea_dir)/rm_icc2_pnr_scripts/write_data.tcl"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="write_data_for_etm"/>
+      <attribute name="step" value="rm_icc2"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="dst" value="write_data_for_etm"/>
+      <attribute name="tool" value="icc2"/>
+    </package>
+  </package>
+  <package type="edges">
+    <package type="edge">
+      <attribute name="from" value="chip_finish"/>
+      <attribute name="to" value="icv_in_design"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="clock_opt_cts"/>
+      <attribute name="to" value="clock_opt_opto"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="clock_opt_opto"/>
+      <attribute name="to" value="route_auto"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="icv_in_design"/>
+      <attribute name="to" value="all"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="init_design"/>
+      <attribute name="to" value="place_opt"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="place_opt"/>
+      <attribute name="to" value="clock_opt_cts"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="pt_eco_incremental_1"/>
+      <attribute name="to" value="pt_eco_incremental_2"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="route_auto"/>
+      <attribute name="to" value="route_opt"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="route_opt"/>
+      <attribute name="to" value="chip_finish"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="route_opt"/>
+      <attribute name="to" value="pt_eco"/>
+      <attribute name="points" value="|20,23"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="route_opt"/>
+      <attribute name="to" value="pt_eco_incremental_1"/>
+      <attribute name="points" value="|20,27"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="setup"/>
+      <attribute name="to" value="init_design"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="write_data"/>
+      <attribute name="to" value="fm"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="write_data"/>
+      <attribute name="to" value="vc_lp"/>
+    </package>
+  </package>
+  <package type="grid">
+    <attribute name="width" value="400"/>
+    <attribute name="height" value="540"/>
+  </package>
+  <package type="positions">
+    <package type="position">
+      <attribute name="name" value="note-2"/>
+      <attribute name="x" value="320"/>
+      <attribute name="y" value="120"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-3"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="x" value="330"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="all"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="510"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="setup"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="70"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="chip_finish"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="430"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="clock_opt_cts"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="190"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="clock_opt_opto"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="230"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="export"/>
+      <attribute name="x" value="350"/>
+      <attribute name="y" value="350"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="fm"/>
+      <attribute name="x" value="370"/>
+      <attribute name="y" value="470"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="icv_in_design"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="470"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="init_design"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="110"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="place_opt"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="150"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="pt_eco"/>
+      <attribute name="x" value="350"/>
+      <attribute name="y" value="230"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="pt_eco_incremental_1"/>
+      <attribute name="x" value="310"/>
+      <attribute name="y" value="270"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="pt_eco_incremental_2"/>
+      <attribute name="x" value="310"/>
+      <attribute name="y" value="310"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="redhawk_in_design_pnr"/>
+      <attribute name="x" value="310"/>
+      <attribute name="y" value="150"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="route_auto"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="270"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="route_opt"/>
+      <attribute name="x" value="70"/>
+      <attribute name="y" value="310"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="summary"/>
+      <attribute name="x" value="350"/>
+      <attribute name="y" value="430"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="vc_lp"/>
+      <attribute name="x" value="360"/>
+      <attribute name="y" value="510"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="write_data"/>
+      <attribute name="x" value="280"/>
+      <attribute name="y" value="510"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="write_data_for_etm"/>
+      <attribute name="x" value="320"/>
+      <attribute name="y" value="390"/>
+    </package>
+  </package>
+</file>

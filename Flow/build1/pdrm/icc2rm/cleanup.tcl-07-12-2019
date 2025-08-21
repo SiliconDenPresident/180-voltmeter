@@ -1,0 +1,587 @@
+##START_EVAL
+##########################################################################################
+# File Cleanup by RMgen
+#
+# This is where we determine if we need to remove files that are not in the flow
+# selected by the user from the RM configuration.
+# This section will not be present in the generated scripts from RMgen.
+##########################################################################################
+#set SKIP_FILES ""
+#if {$RMGEN} {
+##  remove common_settings_for_advanced_node.tcl if NODE is ESTABLISHED 
+#if {$NODE == "ESTABLISHED"} {
+#lappend SKIP_FILES rm_icc2_flat_scripts/common_settings_for_advanced_node.tcl
+#}
+#set RMGEN_REMOVE_TCL_FILES {to_rmgen "skip_file" $SKIP_FILES}
+#eval $RMGEN_REMOVE_TCL_FILES
+#}
+
+##########################################################################################
+### Always delete advanced node files
+##########################################################################################
+###	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_8nm_s.place_spacing_rules \
+
+
+
+set files "\
+        $rmgen($ODIR)/rm_icc2_dp_scripts/settings.floorplan.non_persistent.tcl.7nm_t \
+
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.10nm_t.floorplan_settings \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.10nm_s.floorplan_settings \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.10nm_s.boundary_cells \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.std_cell_rail.tcl.10nm_t \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.std_cell_rail.tcl.10nm_s \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.10nm_t \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.10nm_s \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.10nm_t \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.10nm_s \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.10nm_t \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.10nm_s \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.10nm_s \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.10nm_t \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.10nm_s.write_gds \
+        $rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.10nm_t.write_gds \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.10nm_s.write_oasis \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.10nm_t.write_oasis \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl.10nm_s \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl.10nm_t \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.tap_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.create_pg.h240 \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.create_pg.h300 \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.floorplan_settings.N7_15M_1X1Xa1Ya5Y2Yy2Yx2R_RDL_M1P57_M2P40_M3P44_M4P76_M5P76_M6P76_M7P76_M8P76_M9P76_H240 \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.floorplan_settings.N7_11M_2X1Ya3Y2Yy2R_UTRDL_M1P57_M2P40_M3P44_M4P76_M5P76_M6P76_M7P76_H240 \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.mega_switch \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.pg \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_t.tracks \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.7nm_t.common \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.7nm_t.h240 \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.7nm_t.filler_insertion \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.7nm_t.cut_metals \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.7nm_t \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.7nm_t.write_gds \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.7nm_t.write_oasis \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/pt_eco.tcl.7nm_t \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/eco_opt.tcl.7nm_t \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/functional_eco.tcl.7nm_t \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/route_auto.tcl.7nm_t.via_ladder \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm_t.create_pg.hd \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm_t.create_pg.hs \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm_t.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm_t.tracks \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm_t.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm_t.tap_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_7nm_t.dont_use \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_7nm_t.h240
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.sg_7nm_t.via_ladder_definition.hs \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.sg_7nm_t.via_ladder_candidate.hs \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.sg_7nm_t.filler_insertion \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.sg_7nm_t.multi-vt_fill1_abutment_swap \
+
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_s.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_s.mega_switch \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_s.create_pg \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_s.pg_stapling_vias \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm_s.boundary_cells \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.non_persistent.tcl.7nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/procedure_for_hash_via_flow.tcl \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.7nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/route_auto.tcl.7nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.7nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.7nm_s \
+
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.8nm_s.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.8nm_s.mega_switch \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.8nm_s.create_pg \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.8nm_s.boundary_cells \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.8nm_s.ca_breaker \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.std_cell_rail.tcl.8nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.non_persistent.tcl.8nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.8nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.8nm_s \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.8nm_s \
+
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_8nm_s.floorplan_settings \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_8nm_s.create_pg \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_8nm_s.boundary_cells \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_8nm_s.ca_breaker \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_8nm_s.dont_use \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.sg_8nm_s.place_spacing_rules \
+
+    	$rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.full.txt \
+    	$rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.techpub.txt \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.old \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.12nm.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.12nm.floorplanning \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.12nm.common \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.12nm.legalization \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.12nm \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.12nm \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/icc2_rm_12nm.tbc \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.12nm \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.12nm \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.12nm.mega_switch \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.12nm.write_gds \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.12nm.write_oasis \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_12nm.floorplanning \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_12nm.create_pg \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_12nm.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_12nm.legalization \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_12nm.dont_use \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/icv_in_design.tcl.sg_12nm \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.sg_12nm \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl.sg_12nm \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm+_t.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm+_t.mega_switch \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.7nm+_t.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.7nm+_t \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/route_auto.tcl.7nm+_t.via_ladder \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.7nm+_t.write_gds \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.7nm+_t.write_oasis \
+    	
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm+_t.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm+_t.create_pg.hd \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm+_t.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_7nm+_t.tap_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_7nm+_t \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.sg_7nm+_t.filler_insertion \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/chip_finish.tcl.sg_7nm+_t.multi-vt_fill1_abutment_swap \
+
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.16nm \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.5nm_t.floorplan_settings \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.5nm_t.mega_switch \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.5nm_t.boundary_cells \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.5nm_t.via_ladder \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/route_auto.tcl.5nm_t.via_ladder \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.5nm_t.write_gds \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data.tcl.5nm_t.write_oasis \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/print_results.original.tcl \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/jump_start.tcl \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/jump_start_for_gui.tcl \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/set_qor_strategy_template.original.tcl \
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/rm_source.tcl \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/5nm_s \
+
+    	$rmgen($ODIR)/rm_icc2_pnr_scripts/5nm_t \
+"
+
+#set files "$files_7nm_s $files_7nm+_t $files_7nm_t $files_16nm $files_12nm $files_10nm_t $files_10nm_s" 
+
+## Delete all side files from each advanced nodes; they are only available on AG
+foreach iter $files {
+   if {[file exists $iter]} { 
+      file delete -force $iter  
+   }
+}
+
+## Delete side files not protected by NDA but not relevant to current node
+if {$NODE != "ESTABLISHED"} {
+	if {[file exists $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.established]} {
+	    	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.established
+	}
+}
+if {$NODE != "20nm"} {
+	if {[file exists $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.20nm]} {
+	    	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.20nm
+	}
+}
+if {$NODE != "14nm"} {
+	if {[file exists $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.14nm]} {
+	    	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.14nm
+	}
+}
+if {($NODE == "10nm") || ($SYNOPSYS_LIBRARY && ($NODE == "16nm" && $FOUNDRY == "TSMC")) || ($SYNOPSYS_LIBRARY && ($NODE == "12nm" && $FOUNDRY == "TSMC"))} {
+	if {[file exists $rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl]} {
+	    	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl
+	}
+}
+## 2019/4/15
+if {($NODE == "7nm" && $FOUNDRY == "SEC") || ($NODE == "8nm" && $FOUNDRY == "SEC")} {
+	if {[file exists $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.non_persistent.tcl]} {
+	    	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.non_persistent.tcl
+	}
+}
+
+## Delete all release nodes from each advanced nodes; they are only available on AG
+if {$NODE == "reserve"} {
+if {$NODE == "10nm" && $FOUNDRY == "SEC"} {
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt]} {
+	    	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_s.txt]} {
+	    	file delete $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_s.txt
+	    	#file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_s.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+} else {
+	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_s.txt
+}
+if {$NODE == "10nm" && $FOUNDRY == "TSMC"} {
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt]} {
+	    	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_t.txt]} {
+	    	file delete $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_t.txt
+	    	#file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_t.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+} else {
+	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.10nm_t.txt
+}
+if {$NODE == "7nm" && $FOUNDRY == "TSMC"} {
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt]} {
+	    	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm_t.txt]} {
+	    	file delete $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm_t.txt
+	    	#file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm_t.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+} else {
+	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm_t.txt
+}
+if {$NODE == "7nm+" && $FOUNDRY == "TSMC"} {
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt]} {
+	    	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm+_t.txt]} {
+		file delete $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm+_t.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+		#file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm+_t.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+} else {
+	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.7nm+_t.txt
+}
+if {$NODE == "12nm" && $FOUNDRY == "TSMC"} {
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt]} {
+	    	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.12nm.txt]} {
+	    	file delete $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.12nm.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	    	#file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.12nm.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+} else {
+	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.12nm.txt
+}
+
+if {$NODE == "16nm" && $FOUNDRY == "TSMC"} {
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt]} {
+	    	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+	if {[file exists $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.16nm.txt]} {
+	    	file delete $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.16nm.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	    	#file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.16nm.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+	}
+} else {
+	file delete -force $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.16nm.txt
+}
+}
+
+##########################################################################################
+## Delete all beta scripts
+##########################################################################################
+if {!$SHOW_BETA_FEATURES} {
+	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/fix_delta_delay_by_NDR.tbc
+	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/proc_qor.tcl
+}
+##########################################################################################
+### SG 16nm Start
+##########################################################################################
+## SG 16nm files are not NDA protected and will be incldued in the main tar file
+##              	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_16nm.place_spacing_rules \
+
+if {!($SYNOPSYS_LIBRARY && $NODE == "16nm")} {
+   set files "\
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_16nm.boundary_cells \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_16nm.create_pg.hs \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_16nm.create_pg.hd \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.sg_16nm.create_pg.uhd \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/route_opt.tcl.sg_16nm.via_stitching \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl.sg_16nm.dont_use \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.sg_16nm.place_spacing_rules \
+              	$rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl.sg_16nm \
+	     "
+   foreach iter $files {
+      if {[file exists $iter]} { 
+         file delete -force $iter  
+      }
+   }
+}
+##########################################################################################
+### README.side_files.txt Start
+##########################################################################################
+## README.side_files.txt should only be present in the main tar file for 7, 10, and 12 
+if {$NODE == "ESTABLISHED" || $NODE == "20nm" || $NODE == "14nm"} {
+   set files "\
+              	$rmgen($ODIR)/README.side_files.txt \
+	     "
+   foreach iter $files {
+      if {[file exists $iter]} { 
+         file delete -force $iter  
+      }
+   }
+}
+##########################################################################################
+### section a75 Start
+##########################################################################################
+if {$CORE != "a75"} {
+	set files "\
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/a75 \
+	"
+	foreach iter $files {
+	   if {[file exists $iter]} { 
+	      file delete -force $iter  
+	   }
+	}
+} else {
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/clock_opt_cts.tcl.a75.post 		$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_cts.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/clock_opt_cts.tcl.a75.pre 		$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_cts.tcl.a75.pre
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/clock_opt_opto.tcl.a75.post		$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_opto.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/clock_opt_opto.tcl.a75.pre		$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_opto.tcl.a75.pre
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/enable_tpo_recovery_v2.tbc.a75	$rmgen($ODIR)/rm_icc2_pnr_scripts/enable_tpo_recovery_v2.tbc.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/icc2_common_setup.tcl.a75		$rmgen($ODIR)/rm_icc2_pnr_scripts/icc2_common_setup.tcl.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/icc2_pnr_setup.tcl.a75		$rmgen($ODIR)/rm_icc2_pnr_scripts/icc2_pnr_setup.tcl.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/init_design.tcl.a75.commit_upf_1	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a75.commit_upf_1
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/init_design.tcl.a75.commit_upf_2	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a75.commit_upf_2
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/init_design.tcl.a75.power_switch	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a75.power_switch
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/init_design.tcl.a75.pocv		$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a75.pocv
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/init_design.tcl.a75.post		$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/offset_solution.tcl.a75		$rmgen($ODIR)/rm_icc2_pnr_scripts/offset_solution.tcl.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/place_opt.tcl.a75.post		$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/place_opt.tcl.a75.pre			$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt.tcl.a75.pre
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/proc_qor.tcl.a75			$rmgen($ODIR)/rm_icc2_pnr_scripts/proc_qor.tcl.a75
+	#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/report_icg.nosplit.tcl.a75		$rmgen($ODIR)/rm_icc2_pnr_scripts/report_icg.nosplit.tcl.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/report_icg.tcl.a75			$rmgen($ODIR)/rm_icc2_pnr_scripts/report_icg.tcl.a75
+	#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/report_qor.nosplit.tcl.a75.post	$rmgen($ODIR)/rm_icc2_pnr_scripts/report_qor.nosplit.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/report_qor.tcl.a75.post		$rmgen($ODIR)/rm_icc2_pnr_scripts/report_qor.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/report_qor.tcl.a75.pre		$rmgen($ODIR)/rm_icc2_pnr_scripts/report_qor.tcl.a75.pre
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/route_auto.tcl.a75.pre		$rmgen($ODIR)/rm_icc2_pnr_scripts/route_auto.tcl.a75.pre
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/route_opt.tcl.a75.pre			$rmgen($ODIR)/rm_icc2_pnr_scripts/route_opt.tcl.a75.pre
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/route_opt.tcl.a75.post		$rmgen($ODIR)/rm_icc2_pnr_scripts/route_opt.tcl.a75.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/cts_ndr.tcl.a75			$rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/vt_def.tcl.a75			$rmgen($ODIR)/rm_icc2_pnr_scripts/vt_def.tcl.a75
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a75/high_effort_power.tbc.a75		$rmgen($ODIR)/rm_icc2_pnr_scripts/high_effort_power.tbc.a75
+	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/a75  
+}
+##########################################################################################
+### section a55 Start
+##########################################################################################
+if {$CORE != "a55"} {
+	set files "\
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/a55 \
+	"
+	foreach iter $files {
+	   if {[file exists $iter]} { 
+	      file delete -force $iter
+	   }
+	}
+} else {
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/clock_opt_cts_post_script.tcl.a55 	$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_cts_post_script.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/clock_opt_cts_pre_script.tcl.a55 	$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_cts_pre_script.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/clock_opt_opto_pre_script.tcl.a55	$rmgen($ODIR)/rm_icc2_pnr_scripts/clock_opt_opto_pre_script.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/density_grid_procs.tbc.a55 		$rmgen($ODIR)/rm_icc2_pnr_scripts/density_grid_procs.tbc.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/high_effort_power.tbc.a55 		$rmgen($ODIR)/rm_icc2_pnr_scripts/high_effort_power.tbc.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/icc2_common_setup.tcl.a55 		$rmgen($ODIR)/rm_icc2_pnr_scripts/icc2_common_setup.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/icc2_pnr_setup.tcl.a55		$rmgen($ODIR)/rm_icc2_pnr_scripts/icc2_pnr_setup.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/init_design.tcl.a55.commit_upf_1 	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a55.commit_upf_1
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/init_design.tcl.a55.commit_upf_2 	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a55.commit_upf_2
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/init_design.tcl.a55.pocv 		$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a55.pocv
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/init_design.tcl.a55.post 		$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl.a55.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/proc_qor.tcl.a55 			$rmgen($ODIR)/rm_icc2_pnr_scripts/proc_qor.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/report_power.tcl.a55 			$rmgen($ODIR)/rm_icc2_pnr_scripts/report_power.tcl.a55
+	#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/report_qor.nosplit.tcl.a55.post 	$rmgen($ODIR)/rm_icc2_pnr_scripts/report_qor.nosplit.tcl.a55.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/report_qor.tcl.a55.post 		$rmgen($ODIR)/rm_icc2_pnr_scripts/report_qor.tcl.a55.post
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/route_auto_pre_script.tcl.a55		$rmgen($ODIR)/rm_icc2_pnr_scripts/route_auto_pre_script.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/route_opt_pre_script.tcl.a55 		$rmgen($ODIR)/rm_icc2_pnr_scripts/route_opt_pre_script.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/route_opt_post_script.tcl.a55		$rmgen($ODIR)/rm_icc2_pnr_scripts/route_opt_post_script.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/vt_def.tcl.a55 			$rmgen($ODIR)/rm_icc2_pnr_scripts/vt_def.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/cts_ndr.tcl.a55		$rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl.a55
+	file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/place_opt_pre_script.a55.tcl		$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt_pre_script.tcl.a55
+
+	## RMgen only evaluates code if the name is in .tcl extention; rename it back to *.a55 convention to be consistent with rest of files 
+	# file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/a55/place_opt_pre_script.a55.tcl 		$rmgen($ODIR)/rm_icc2_pnr_scripts/place_opt_pre_script.tcl.a55
+
+	file delete -force $rmgen($ODIR)/rm_icc2_pnr_scripts/a55  
+}
+##########################################################################################
+### RM_FULL & Jumpstart Section Start
+##########################################################################################
+if {$RM_FULL} {
+	set files "\
+	$rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only \
+	$rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only_jumpstart"
+	if {$MODE == "J"} {
+		### RM_FULL + J is not supported on GUI; no need to consider it
+	} elseif {$MODE == "D"} {
+		set files "\
+		$rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only \
+		$rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only_jumpstart \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.bus_routing.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.clock_uncertainty.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.enable_aocv.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.mscts.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.propagate_all_clocks.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.redundant_vias.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_opto.non_ccd_cto.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/place_opt.mscts.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/place_opt.spg.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.create_shields.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.global_route_opto.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.redundant_vias.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.resolve_drcs.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.spread_wires.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.create_shields.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.eco_opt.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.redundant_vias.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.target_endpoints.tcl
+		$rmgen($ODIR)/README.ICC2-FLAT-PNR-RM.icc2_shell_version.txt \
+		$rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.icc2_shell_version.txt \
+		"
+	}
+  	foreach iter $files {
+		if {[file exists $iter]} { 
+			file delete -force $iter  
+		}
+	}
+} elseif {!$RM_FULL} {
+	## Remove flat DP, hier DP, and hier P&R files
+	set files "\
+	$rmgen($ODIR)/rm_icc2_dp_scripts \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.from_ascii.hier.tcl \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.from_dp_rm_ndm.hier.tcl \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/create_softlinks_to_subblocks.tcl \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/write_data_for_etm.tcl \
+	$rmgen($ODIR)/rm_icc2_pnr_scripts/export.tcl \
+
+	$rmgen($ODIR)/README.ICC2-FLAT-DP-RM.txt \
+	$rmgen($ODIR)/README.ICC2-HIER-DP-RM.txt \
+	$rmgen($ODIR)/README.ICC2-FLAT-PNR-RM.txt \
+	$rmgen($ODIR)/README.ICC2-HIER-PNR-RM.txt \
+	$rmgen($ODIR)/README.unpack_rm_dirs.txt \
+	$rmgen($ODIR)/Release_Notes.ICC2-FLAT-DP-RM.txt \
+	$rmgen($ODIR)/Release_Notes.ICC2-HIER-DP-RM.txt \
+	$rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt \
+	$rmgen($ODIR)/Release_Notes.ICC2-HIER-PNR-RM.txt \
+	$rmgen($ODIR)/unpack_rm_dirs.pl 
+
+	$rmgen($ODIR)/rm_setup/Makefile_dp_flat \
+	$rmgen($ODIR)/rm_setup/Makefile_dp_hier \
+	$rmgen($ODIR)/rm_setup/icc2_dp_setup.tcl \
+	$rmgen($ODIR)/rm_setup/Makefile_pnr"
+
+  	foreach iter $files {
+		if {[file exists $iter]} { 
+			file delete -force $iter  
+		}
+	}
+
+	file rename $rmgen($ODIR)/README.ICC2-FLAT-PNR-RM.icc2_shell_version.txt $rmgen($ODIR)/README.ICC2-FLAT-PNR-RM.txt
+	file rename $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.icc2_shell_version.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt
+
+	if {$MODE == "J"} {
+		set files "\
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/settings.non_persistent.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/route_opt.eco_opt.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/flavor.area_power_focused.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/flavor.high_connectivity_high_congestion_focused.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/flavor.run_time_focused.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/pt_eco.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/pt_eco_incremental_1.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/pt_eco_incremental_2.tcl \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/implement_pt_incr_eco_in_subblocks.tcl \
+		$rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only \
+		$rmgen($ODIR)/rm_setup/icc2_common_setup.tcl \
+		"
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.place_opt.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/place_opt.optional_settings.tcl
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.clock_opt_cts.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.optional_settings.tcl
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.clock_opt_opto.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_opto.optional_settings.tcl
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.route_auto.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.optional_settings.tcl
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.route_opt.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.optional_settings.tcl
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/mscts.structural.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/mscts.structural.tcl
+		file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/mscts.regular.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/mscts.regular.tcl
+		#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/set_lib_cell_purpose.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/set_lib_cell_purpose.tcl
+
+		if {!(($NODE == "10nm") || ($SYNOPSYS_LIBRARY && ($NODE == "16nm" && $FOUNDRY == "TSMC")) || ($SYNOPSYS_LIBRARY && ($NODE == "12nm" && $FOUNDRY == "TSMC")))} {
+		#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/cts_ndr.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/cts_ndr.tcl
+		}
+
+		#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/template.place_opt.set_qor_strategy.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/template.place_opt.set_qor_strategy.tcl
+		#file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/templates/init_design.tcl
+		file rename $rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only_jumpstart $rmgen($ODIR)/rm_setup/Makefile_pnr
+	} elseif {$MODE == "D"} {
+		set files "\
+		$rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only_jumpstart \
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.bus_routing.tcl                                                                          
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.clock_uncertainty.tcl                                                                    
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.enable_aocv.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.mscts.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.propagate_all_clocks.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_cts.redundant_vias.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/clock_opt_opto.non_ccd_cto.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/place_opt.mscts.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/place_opt.spg.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.create_shields.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.global_route_opto.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.redundant_vias.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.resolve_drcs.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_auto.spread_wires.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.create_shields.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.eco_opt.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.redundant_vias.tcl
+		$rmgen($ODIR)/rm_icc2_pnr_scripts/templates/route_opt.target_endpoints.tcl
+		"
+		file rename $rmgen($ODIR)/rm_setup/Makefile_pnr_flat_only $rmgen($ODIR)/rm_setup/Makefile_pnr
+	}
+
+  	foreach iter $files {
+		if {[file exists $iter]} { 
+			file delete -force $iter  
+		}
+	}
+}
+##########################################################################################
+### FC Section
+##########################################################################################
+if {!$FC_COMPATIBLE} {
+    set files "$rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.from_rtl.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.from_fc_ascii.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/compile.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/settings.compile.tcl $rmgen($ODIR)/rm_setup/Makefile $rmgen($ODIR)/rm_setup/Makefile_dp_flat_fc $rmgen($ODIR)/rm_setup/Makefile_dp_hier_fc $rmgen($ODIR)/rm_icc2_pnr_scripts/fm.fc.tcl  $rmgen($ODIR)/rm_icc2_pnr_scripts/read_rtl.tcl $rmgen($ODIR)/README.FC-RM.txt $rmgen($ODIR)/fc_unpack_rm_dirs.pl $rmgen($ODIR)/README.FC.unpack_rm_dirs.txt $rmgen($ODIR)/rm_icc2_pnr_scripts/load_block_ctl_files.tcl.template"
+  	foreach iter $files {
+	     if {[file exists $iter]} { 
+	        file delete -force $iter  
+	     }
+	  }
+    
+} elseif {$FC_COMPATIBLE} {
+     ## FC Version of Scripts
+    set files "\
+    $rmgen($ODIR)/rm_setup/Makefile_dp_flat  $rmgen($ODIR)/rm_setup/Makefile_dp_hier $rmgen($ODIR)/rm_setup/Makefile_pnr \
+    $rmgen($ODIR)/rm_icc2_pnr_scripts/init_design.from_dc_ascii.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/jump_start.tcl \
+    $rmgen($ODIR)/README.ICC2-FLAT-DP-RM.txt $rmgen($ODIR)/README.ICC2-FLAT-PNR-RM.txt $rmgen($ODIR)/README.ICC2-HIER-DP-RM.txt $rmgen($ODIR)/README.ICC2-HIER-PNR-RM.txt \
+    $rmgen($ODIR)/Release_Notes.ICC2-FLAT-DP-RM.txt $rmgen($ODIR)/Release_Notes.ICC2-FLAT-PNR-RM.txt $rmgen($ODIR)/Release_Notes.ICC2-HIER-DP-RM.txt $rmgen($ODIR)/Release_Notes.ICC2-HIER-PNR-RM.txt \
+    $rmgen($ODIR)/unpack_rm_dirs.pl $rmgen($ODIR)/README.unpack_rm_dirs.txt $rmgen($ODIR)/rm_in_lynx $rmgen($ODIR)/README.side_files.txt"
+###   $rmgen($ODIR)/rm_icc2_pnr_scripts/fm.tcl
+  	foreach iter $files {
+	     if {[file exists $iter]} { 
+	        file delete -force $iter  
+	     }
+	  }
+
+     file rename $rmgen($ODIR)/rm_setup/Makefile_dp_flat_fc $rmgen($ODIR)/rm_setup/Makefile_dp_flat
+     file rename $rmgen($ODIR)/rm_setup/Makefile_dp_hier_fc $rmgen($ODIR)/rm_setup/Makefile_dp_hier
+#     file rename $rmgen($ODIR)/rm_icc2_pnr_scripts/fm.fc.tcl $rmgen($ODIR)/rm_icc2_pnr_scripts/fm.tcl
+     file rename $rmgen($ODIR)/rm_icc2_pnr_scripts $rmgen($ODIR)/rm_fc_scripts
+     file rename $rmgen($ODIR)/rm_icc2_dp_scripts $rmgen($ODIR)/rm_fc_dp_scripts
+     file rename $rmgen($ODIR)/rm_setup/icc2_pnr_setup.tcl $rmgen($ODIR)/rm_setup/fc_setup.tcl
+     file rename $rmgen($ODIR)/rm_setup/icc2_common_setup.tcl $rmgen($ODIR)/rm_setup/shared_setup.tcl
+     file rename $rmgen($ODIR)/rm_setup/icc2_dp_setup.tcl $rmgen($ODIR)/rm_setup/fc_dp_setup.tcl
+     file rename $rmgen($ODIR)/fc_unpack_rm_dirs.pl $rmgen($ODIR)/unpack_rm_dirs.pl
+     file rename $rmgen($ODIR)/README.FC.unpack_rm_dirs.txt $rmgen($ODIR)/README.unpack_rm_dirs.txt
+}
+##END_EVAL

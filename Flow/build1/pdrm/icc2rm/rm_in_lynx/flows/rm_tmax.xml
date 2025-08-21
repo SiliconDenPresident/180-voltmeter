@@ -1,0 +1,109 @@
+
+<!--
+## HEADER_MSG ============================================================================
+## HEADER_MSG RM_in_LYNX 
+## HEADER_MSG Script: rm_tmax.xml
+## HEADER_MSG Version: P-2019.03-SP2
+## HEADER_MSG Copyright (C) 2010-2019 Synopsys, Inc. All rights reserved.
+## HEADER_MSG ============================================================================
+## HEADER_MSG DESCRIPTION:
+## HEADER_MSG * Flow XML file for TMAX RM
+## HEADER_MSG OPEN IN Lynx Runtime Manager Flow Editor"
+## HEADER_MSG ============================================================================
+-->
+<file type="flow">
+  <attribute name="flow_name" value="rm_tmax"/>
+  <package type="tasks">
+    <package type="note">
+      <attribute name="name" value="note-2"/>
+      <attribute name="title" value="TMAX"/>
+      <attribute name="text">
+        <value>Main task = tmax
+Optional tasks for debug = tmax_debug_patterns, tmax_update_patterns</value>
+      </attribute>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="title" value="Limitations"/>
+      <attribute name="text">
+        <value>Editing this flow is currently restricted
+- Task re-ordering will not implicitly alter the scripts. 
+  [The RM hard codes variables and script content with the task source and destination information.]
+- Necessary flow changes would need coordinated RM script/variable updates.
+- Changes to other task properties are acceptable (e.g. TEV(num_cores))
+- Changes to joiner enable/disable is acceptable
+</value>
+      </attribute>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="all"/>
+      <attribute name="step" value="rm_tmax"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="tmax"/>
+      <attribute name="step" value="rm_tmax"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="tmax"/>
+      <attribute name="dst" value="tmax"/>
+      <attribute name="tool" value="tx"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="tmax_debug_patterns"/>
+      <attribute name="step" value="rm_tmax"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="tmax"/>
+      <attribute name="dst" value="tmax"/>
+      <attribute name="tool" value="tx"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="tmax_update_patterns"/>
+      <attribute name="step" value="rm_tmax"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="tmax"/>
+      <attribute name="dst" value="tmax"/>
+      <attribute name="tool" value="tx"/>
+    </package>
+  </package>
+  <package type="edges">
+    <package type="edge">
+      <attribute name="from" value="tmax"/>
+      <attribute name="to" value="all"/>
+    </package>
+  </package>
+  <package type="grid">
+    <attribute name="width" value="280"/>
+    <attribute name="height" value="230"/>
+  </package>
+  <package type="positions">
+    <package type="position">
+      <attribute name="name" value="note-2"/>
+      <attribute name="x" value="50"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="x" value="210"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="all"/>
+      <attribute name="x" value="50"/>
+      <attribute name="y" value="200"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="tmax"/>
+      <attribute name="x" value="50"/>
+      <attribute name="y" value="70"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="tmax_debug_patterns"/>
+      <attribute name="x" value="200"/>
+      <attribute name="y" value="90"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="tmax_update_patterns"/>
+      <attribute name="x" value="190"/>
+      <attribute name="y" value="140"/>
+    </package>
+  </package>
+</file>

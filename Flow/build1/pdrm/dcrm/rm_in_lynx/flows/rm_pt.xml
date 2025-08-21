@@ -1,0 +1,109 @@
+
+<!--
+## HEADER_MSG ============================================================================
+## HEADER_MSG RM_in_LYNX 
+## HEADER_MSG Script: rm_pt.xml
+## HEADER_MSG Version: P-2019.03-SP2
+## HEADER_MSG Copyright (C) 2010-2019 Synopsys, Inc. All rights reserved.
+## HEADER_MSG ============================================================================
+## HEADER_MSG DESCRIPTION:
+## HEADER_MSG * Flow XML file for PT RM
+## HEADER_MSG OPEN IN Lynx Runtime Manager Flow Editor"
+## HEADER_MSG ============================================================================
+-->
+<file type="flow">
+  <attribute name="flow_name" value="rm_pt"/>
+  <package type="tasks">
+    <package type="note">
+      <attribute name="name" value="note-2"/>
+      <attribute name="title" value="PrimeTime and PrimeTime-DMSA"/>
+      <attribute name="text">
+        <value>Standard Reference Methodology - pt task
+DMSA flow - dmsa task</value>
+      </attribute>
+    </package>
+    <package type="note">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="title" value="Limitations"/>
+      <attribute name="text">
+        <value>Editing this flow is currently restricted
+- Task re-ordering will not implicitly alter the scripts. 
+  [The RM hard codes variables and script content with the task source and destination information.]
+- Necessary flow changes would need coordinated RM script/variable updates.
+- Changes to other task properties are acceptable (e.g. TEV(num_cores))
+- Changes to joiner enable/disable is acceptable
+</value>
+      </attribute>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="all"/>
+      <attribute name="step" value="rm_pt"/>
+    </package>
+    <package type="join_task">
+      <attribute name="name" value="all_dmsa"/>
+      <attribute name="step" value="rm_pt"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="dmsa"/>
+      <attribute name="step" value="rm_pt"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="ptdmsa"/>
+      <attribute name="dst" value="ptdmsa"/>
+      <attribute name="tool" value="pt_dmsa"/>
+    </package>
+    <package type="tool_task">
+      <attribute name="name" value="pt"/>
+      <attribute name="step" value="rm_pt"/>
+      <attribute name="script_file" value="$SEV(gscript_dir)/rm_in_lynx/scripts/run_rm.tcl"/>
+      <attribute name="src" value="pt"/>
+      <attribute name="dst" value="pt"/>
+      <attribute name="tool" value="pt"/>
+    </package>
+  </package>
+  <package type="edges">
+    <package type="edge">
+      <attribute name="from" value="dmsa"/>
+      <attribute name="to" value="all_dmsa"/>
+    </package>
+    <package type="edge">
+      <attribute name="from" value="pt"/>
+      <attribute name="to" value="all"/>
+    </package>
+  </package>
+  <package type="grid">
+    <attribute name="width" value="230"/>
+    <attribute name="height" value="280"/>
+  </package>
+  <package type="positions">
+    <package type="position">
+      <attribute name="name" value="note-2"/>
+      <attribute name="x" value="110"/>
+      <attribute name="y" value="80"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="note-4-copy"/>
+      <attribute name="x" value="160"/>
+      <attribute name="y" value="30"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="all"/>
+      <attribute name="x" value="60"/>
+      <attribute name="y" value="250"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="all_dmsa"/>
+      <attribute name="x" value="150"/>
+      <attribute name="y" value="250"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="dmsa"/>
+      <attribute name="x" value="150"/>
+      <attribute name="y" value="120"/>
+    </package>
+    <package type="position">
+      <attribute name="name" value="pt"/>
+      <attribute name="x" value="60"/>
+      <attribute name="y" value="120"/>
+    </package>
+  </package>
+</file>
