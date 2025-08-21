@@ -1,4 +1,4 @@
-set clkname clock
+set clkname clk_i
 
 #---------------------------------------------------------
 # Specify a 5ns clock period with 50% duty cycle     

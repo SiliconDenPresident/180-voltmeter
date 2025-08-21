@@ -9,9 +9,9 @@ set TECH_HOME "/mnt/designkits/gf180MCU"
 # Copyright (C) 2007-2019 Synopsys, Inc. All rights reserved.
 ##########################################################################################
 
-set DESIGN_NAME                   "counter"  ;#  The name of the top-level design
+set DESIGN_NAME                   "digital_top"  ;#  The name of the top-level design
 
-set DESIGN_REF_DATA_PATH          "../src/rtl/counter"  ;#  Absolute path prefix variable for library/design data.
+set DESIGN_REF_DATA_PATH          "../src/rtl/digital_top"  ;#  Absolute path prefix variable for library/design data.
                                        #  Use this variable to prefix the common absolute path  
                                        #  to the common variables defined below.
                                        #  Absolute paths are mandatory for hierarchical 
@@ -31,7 +31,7 @@ set HIERARCHICAL_CELLS             "" ;# List of hierarchical block cell instanc
 # For the following variables, use a blank space to separate multiple entries.
 # Example: set TARGET_LIBRARY_FILES "lib1.db lib2.db lib3.db"
 
-set ADDITIONAL_SEARCH_PATH        "../src/rtl/counter"  ;#  Additional search path to be added to the default search path
+set ADDITIONAL_SEARCH_PATH        "../src/rtl/digital_top"  ;#  Additional search path to be added to the default search path
 
 set TARGET_LIBRARY_FILES          ""  ;#  Target technology logical libraries
 append TARGET_LIBRARY_FILES " \

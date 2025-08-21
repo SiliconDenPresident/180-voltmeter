@@ -14,7 +14,7 @@ set DCRM_RESULTS_DIR "../dcrm/results"
 ## Required variables
 ## These variables must be correctly filled in for the flow to run properly
 ##########################################################################################
-set DESIGN_NAME 		"counter" ;# Required; name of the design to be worked on; also used as the block name when scripts save or copy a block
+set DESIGN_NAME 		"digital_top" ;# Required; name of the design to be worked on; also used as the block name when scripts save or copy a block
 set LIBRARY_SUFFIX		"" ;# Suffix for the design library name ; default is unspecified   
 set DESIGN_LIBRARY 		"${DESIGN_NAME}${LIBRARY_SUFFIX}" ;# Name of the design library; default is ${DESIGN_NAME}${LIBRARY_SUFFIX}
 set REFERENCE_LIBRARY 		"${TECH_HOME}/dk_open/local/icc2libprep/gf180mcu_fd_sc_mcu7t5v0/icc2_cell_lib/gf180mcu_fd_sc_mcu7t5v0.ndm"	;# Required; a list of reference libraries for the design library.

@@ -53,7 +53,7 @@ if {$synopsys_program_name == "dc_shell" || $synopsys_program_name == "dcnxt_she
 
 }
 
-set RTL_SOURCE_FILES  "counter.v"      ;# Enter the list of source RTL files if reading from RTL
+set RTL_SOURCE_FILES  "digital_top.v"      ;# Enter the list of source RTL files if reading from RTL
 
 # The following variables are used by scripts in the rm_dc_scripts folder to direct 
 # the location of the output files.

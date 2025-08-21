@@ -1,7 +1,7 @@
 
 .PHONY: synth report
 
-DESIGN=counter
+DESIGN=digital_top
 
 CLK_PER=5
 UTIL=0.5
