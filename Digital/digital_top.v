@@ -141,8 +141,8 @@ module digital_top (
     assign tx_data_out[17] = sat_hi_o;
     assign tx_data_out[18] = sat_lo_o;
     assign tx_data_out[19] = ref_ok_o;
-    assign tx_data_out[20:21] = afe_sel_o;
-    assign tx_data_out[22:24] = range_sel_o;
+    assign tx_data_out[21:20] = afe_sel_o;
+    assign tx_data_out[24:22] = range_sel_o;
     assign tx_data_out[25] = afe_reset_o;
     assign tx_data_out[26] = ref_sign_o;
     assign tx_data_out[27] = range_error_o;
@@ -156,8 +156,8 @@ module digital_top (
     assign dbg_status_o[17] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[17] : sat_hi_o;
     assign dbg_status_o[18] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[18] : sat_lo_o;
     assign dbg_status_o[19] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[19] : ref_ok_o;
-    assign dbg_status_o[20:21] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[20:21] : afe_sel_o;
-    assign dbg_status_o[22:24] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[22:24] : range_sel_o;
+    assign dbg_status_o[21:20] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[21:20] : afe_sel_o;
+    assign dbg_status_o[24:22] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[24:22] : range_sel_o;
     assign dbg_status_o[25] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[25] : afe_reset_o;
     assign dbg_status_o[26] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[26] : ref_sign_o;
     assign dbg_status_o[27] = (tx_data_in[31] || dbg_ctrl_i[31]) ? tx_data_in[27] : range_error_o;
