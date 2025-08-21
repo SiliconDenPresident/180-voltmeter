@@ -20,7 +20,7 @@
 
 module state_machine (
     input wire clk_i,
-    input wire rst_i,
+    input wire rst_n_i,
 
     // Inputs from AFE
     input wire comp_i,
@@ -75,8 +75,10 @@ module state_machine (
     // Implementation
     // ---------------------------------------------------------
 
-    always @(posedge clk_i or posedge rst_i) begin 
-        if (rst_i || !ref_ok_i) begin
+    always @(posedge clk_i or negedge rst_n_i) begin 
+        if (!rst_n_i) begin
+            current_state <= S_WAIT_REF;
+        end else if (!ref_ok_i) begin
             current_state <= S_WAIT_REF;
         end else if (sat_hi_i || sat_lo_i) begin
             current_state <= S_ERROR;

@@ -28,7 +28,7 @@ module counter (
     output reg [15:0] count_o
 );
     always @(posedge clk_i or negedge rst_n_i) begin
-        if (rst_n_i) begin
+        if (!rst_n_i) begin
             busy_o  <= 1'b0;
             done_o  <= 1'b0;
             count_o <= 16'd0;
