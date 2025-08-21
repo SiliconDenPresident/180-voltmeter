@@ -96,6 +96,11 @@ module state_machine (
         counter_en_o = 1'b0;
         counter_limit_o = COUNTER_LIMIT_DEINTEGRATE;
         done_o = 1'b0;
+        range_error_o = 1'b0;
+        sat_hi_flag = 1'b0;
+        sat_lo_flag = 1'b0;
+        next_state = current_state;
+        comp_prev = comp_i;
         case (current_state)
             S_WAIT_REF: begin
                 afe_reset_o = 1'b1;
