@@ -60,6 +60,9 @@ module digital_top (
     wire done;                // State machine done signal
     wire range_error_o;       // Range error signal
     wire comp_o, sat_hi_o, sat_lo_o, ref_ok_o;  // Sanitized analog signals
+ 
+    wire [31:0] tx_data_in;
+    wire [31:0] tx_data_out;
 
     //---------------------------------------------------------
     // Instantiations
