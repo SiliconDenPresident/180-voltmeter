@@ -15,7 +15,7 @@ report: pnr
 pnr: synth
 	cd icc2rm && $(MAKE) DESIGN=$(DESIGN) clean
 	python3 set_constraints.py $(DESIGN) $(CLK_PER) $(UTIL) $(MAXLYR) $(MAXTRANS) $(CLKUNCERT)
-	$(MAKE) -C icc2rm route_opt
+	$(MAKE) -C icc2rm chip_finish
 
 synth:
 	cd dcrm && $(MAKE) DESIGN=$(DESIGN) clean

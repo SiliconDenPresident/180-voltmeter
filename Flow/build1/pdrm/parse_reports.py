@@ -65,7 +65,7 @@ for line in f:
     continue
   m=re.search(r'^\s*slack\s+\([A-Z]+\)\s+([-+0-9\.]+)',line)
   if m:
-    if scenario=='mode_norm.fast.RCmin_bc' and group=='clock':
+    if scenario=='mode_norm.fast.RCmin_bc' and group=='clk_i':
       whs=m.group(1)
       break
 f.close()
@@ -87,17 +87,17 @@ for line in f:
     continue
   m=re.search(r"^Critical Path Length:\s+([0-9\.\-]+)",line)
   if m:
-    if scenario=='mode_norm.slow.RCmax' and group=='clock':
+    if scenario=='mode_norm.slow.RCmax' and group=='clk_i':
       crit_path_len=m.group(1)
     continue
   m=re.search(r"^Total Hold Violation:\s+([0-9\.\-]+)",line)
   if m:
-    if scenario=='mode_norm.fast.RCmin_bc' and group=='clock':
+    if scenario=='mode_norm.fast.RCmin_bc' and group=='clk_i':
       tnhs=m.group(1)
     continue
   m=re.search(r"^No. of Hold Violations:\s+([0-9]+)",line)
   if m:
-    if scenario=='mode_norm.fast.RCmin_bc' and group=='clock':
+    if scenario=='mode_norm.fast.RCmin_bc' and group=='clk_i':
       nhve=m.group(1)
     continue
   m=re.search(r'Max Trans Violations:\s+(\d+)',line)
