@@ -111,7 +111,13 @@ set write_def_cmd "write_def -compress gzip -version 5.8 ${OUTPUTS_DIR}/${WRITE_
 puts "RM-info: running $write_def_cmd"
 
 ## write_gds
-set write_gds_cmd "write_gds -compress -hierarchy all -long_names -keep_data_type ${OUTPUTS_DIR}/${WRITE_DATA_BLOCK_NAME}.gds"
+set write_gds_cmd "write_gds \
+                    -compress \
+                    -hierarchy all \
+                    -long_names \
+                    -keep_data_type \
+                    -merge_files /mnt/designkits/gf180MCU/dk_open/share/pdk/gf180mcuA/libs.ref/gf180mcu_fd_sc_mcu7t5v0/gds/gf180mcu_fd_sc_mcu7t5v0.gds \
+                    ${OUTPUTS_DIR}/${WRITE_DATA_BLOCK_NAME}.gds"
 
 
 if {[file exists $WRITE_GDS_LAYER_MAP_FILE]} {lappend write_gds_cmd -layer_map $WRITE_GDS_LAYER_MAP_FILE}

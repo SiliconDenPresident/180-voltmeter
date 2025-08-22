@@ -1,5 +1,4 @@
-
-DESIGN=counter
+DESIGN=digital_top
 
 synth: results/$(DESIGN).mapped.v
 results/$(DESIGN).mapped.v:

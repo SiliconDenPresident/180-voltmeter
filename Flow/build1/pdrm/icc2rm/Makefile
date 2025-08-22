@@ -1,6 +1,6 @@
-DESIGN = counter
+DESIGN = digital_top
 
-PNR_TARGETS = all setup init_design place_opt clock_opt_cts clock_opt_opto route_auto route_opt chip_finish icv_in_design
+PNR_TARGETS = all setup init_design place_opt clock_opt_cts clock_opt_opto route_auto route_opt chip_finish icv_in_design write_data
 
 $(PNR_TARGETS):
 	$(MAKE) -f rm_setup/Makefile_pnr $@
