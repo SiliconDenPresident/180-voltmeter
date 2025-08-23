@@ -18,7 +18,7 @@
 
 `timescale 1ns/1ps
 
-module sync_and_filter_tb;
+module testbench;
     // Clock period
     localparam CLK_PERIOD = 10; // 10ns = 100MHz
     
@@ -33,6 +33,9 @@ module sync_and_filter_tb;
     logic rst_n_i;
     logic async_i;
     logic clean_out_o;
+    
+    // Test variables
+    logic stable_output;
     
     // Clock generation
     initial begin
@@ -202,7 +205,7 @@ module sync_and_filter_tb;
         
         // Output should be stable (not oscillating)
         #(CLK_PERIOD * 2);
-        logic stable_output = clean_out_o;
+        stable_output = clean_out_o;
         #(CLK_PERIOD * 2);
         assert(clean_out_o === stable_output)
             else $error("Rapid transitions caused oscillation: clean_out_o changed from %b to %b", stable_output, clean_out_o);

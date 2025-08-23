@@ -17,7 +17,7 @@
 
 `timescale 1ns/1ps
 
-module counter_tb;
+module testbench;
     // Clock period
     localparam CLK_PERIOD = 10; // 10ns = 100MHz
     
@@ -43,7 +43,7 @@ module counter_tb;
     end
     
     // Instantiate the counter module
-    counter dut (
+    counter uut (
         .clk_i(clk_i),
         .rst_n_i(rst_n_i),
         .en_i(en_i),
