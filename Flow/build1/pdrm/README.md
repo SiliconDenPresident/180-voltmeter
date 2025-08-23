@@ -5,10 +5,12 @@ This repository contains physical design reference methodologies for ECE 720 - E
 
 ## Quick Start
 
-    $ git clone https://github.ncsu.edu/engr-ece-720/pdrm.git
+    $ git clone https://github.com/SiliconDenPresident/180-voltmeter
     $ module load syn/X-2025.06-SP1 icc2/W-2024.09-SP2
     $ make setup  # Do this the once to create headings in results.csv
     $ make        # Change variables in Makefile and re-run to append results.csv
+    $ cd icc2rm   # Quick fix for now but the make doesnt generate a gds. continue
+    $ make write_data # This will generate a gds in a outputs directory within icc2rm 
 
 ## Modifying the flows for a new deisgn
 
